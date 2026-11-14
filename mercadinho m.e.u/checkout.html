@@ -1,13 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+    <header class="barraNavegacao">
+        <h1>Mercadinho</h1>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="carrinho.html">Carrinho</a></li>
+            <li><a class="btnSair">Sair</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section class="tituloPagina">Finalizar Compra</section>
+
+        <section class="checkout">
+            <form>
+
+                <div>
+
+                    <h2>Dados Pessoais</h2>
+                    <label>Nome Completo</label>
+                    <input type="text" placeholder="Seu nome">
+
+                    <label>Telefone</label>
+                    <input type="text" placeholder="(44) 99999-9999">
+                </div>
+
+                <div>
+                    <h2>Entrega ou Retirada</h2>
+                    <label>
+                        <input type="radio" name="entrega"> Retirar no Mercadinho
+                    </label>
+                    <label>
+                        <input type="radio" name="entrega"> Entrega em Casa
+                    </label>
+
+                    <label>Endereço</label>
+                    <input type="text" placeholder="Rua, número e bairro">
+                </div>
+
+                <div>
+
+                    <h2>Forma de Pagamento</h2>
+                    <select>
+                        <option>PIX</option>
+                        <option>Cartão de Crédito</option>
+                        <option>Cartão de Débito</option>
+                        <option>Dinheiro</option>
+                    </select>
+                </div>
+
+                <button>Confirmar Pedido</button>
+            </form>
+
+            <section class="resumoPedido">
+
+                <h2>Resumo do Pedido</h2>
+                <ul>
+                    <li>1x Produto Exemplo - R$ 00,00</li>
+                </ul>
+
+                <div>
+                    <p>Subtotal</p>
+                    <p>R$ 00,00</p>
+                </div>
+
+                <div>
+                    <p>Entrega</p>
+                    <p>R$ 00,00</p>
+                </div>
+
+                <div>
+                    <h2>Total</h2>
+                    <h2>R$ 00,00</h2>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="rodape">
+
+        <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
+
+        <div class="redesSociais">
+            
+            <ul>
+                <li><img src="" alt="Instagram"></li>
+                <li><img src="" alt="LinkedIn"></li>
+                <li><img src="" alt="Facebook"></li>
+            </ul>
+        </div>
+    </footer>
+
     <script src="scripts/checkout.js"></script>
 </body>
+
 </html>
