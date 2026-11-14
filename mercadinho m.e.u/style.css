@@ -12,13 +12,14 @@
     margin-bottom: 15px;
 }
 
-.barraNavegacao ul {
-    list-style: none;
+.barraNavegacao .botoes {
     display: flex;
     gap: 5px;
 }
 
-.barraNavegacao ul li {
+
+
+.barraNavegacao .botoes .link {
     text-decoration: none;
     color: black;
     padding: 7px;
@@ -26,21 +27,25 @@
     transition: 0.3s;
 }
 
-.barraNavegacao ul li:hover {
+.barraNavegacao .botoes .link:hover {
     background-color: #13a666;
     position: relative;
     transform: translateY(-3px);
 }
 
-.barraNavegacao ul a {
+.btnEntrar {
+    background-color: #135fa6;
     text-decoration: none;
     color: black;
+    padding: 7px;
+    border-radius: 5px;
+    transition: 0.3s;
+    border: #135fa6 1px solid;
 }
 
-.btnEntrar{
-    background-color: #135fa6;
-}
-
-.btnEntrar:hover{
+.barraNavegacao .btnEntrar:hover {
     background-color: #fff;
+    color: #135fa6;
+    position: relative;
+    transform: translateY(-3px);
 }
