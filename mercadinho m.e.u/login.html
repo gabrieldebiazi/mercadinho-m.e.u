@@ -7,7 +7,53 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <header class="barraNavegacao">
+        <h1>Mercadinho</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="carrinho.html">Carrinho</a></li>
+            <li><a href="login.html" class="btnEntrar">Entrar</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section class="tituloPagina">
+            <h1>Login</h1>
+        </section>
+
+        <section id="login">
+            <form id="formLogin">
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div>
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+
+                <button type="submit">Entrar</button>
+
+                <h2>Não possui uma conta? <a href="cadastro.html">Cadastre-se</a></h2>
+            </form>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
+
+        <div class="redesSociais">
+            <ul>
+                <li><img src="" alt="Instagram"></li>
+                <li><img src="" alt="LinkedIn"></li>
+                <li><img src="" alt="Facebook"></li>
+            </ul>
+        </div>
+    </footer>
+
     <script src="scripts/login.js"></script>
 </body>
 </html>

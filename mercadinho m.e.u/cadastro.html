@@ -7,8 +7,56 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    
+    <header class="barraNavegacao">
+        <h1>Mercadinho</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="carrinho.html">Carrinho</a></li>
+            <li><a href="login.html" class="btnEntrar">Entrar</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section class="tituloPagina">
+            <h1>Cadastro</h1>
+        </section>
+
+        <section id="cadastro">
+            <form id="formCadastro">
+                <div>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div>
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
+
+        <div class="redesSociais">
+            <ul>
+                <li><img src="" alt="Instagram"></li>
+                <li><img src="" alt="LinkedIn"></li>
+                <li><img src="" alt="Facebook"></li>
+            </ul>
+        </div>
+    </footer>
+
     <script src="scripts/cadastro.js"></script>
 </body>
 </html>
