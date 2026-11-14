@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.barraNavegacao {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20%;
+    background: #2fdd91;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.barraNavegacao ul {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+}
+
+.barraNavegacao ul li {
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.barraNavegacao ul li:hover {
+    background-color: #13a666;
+    position: relative;
+    transform: translateY(-3px);
+}
+
+.barraNavegacao ul a {
+    text-decoration: none;
+    color: black;
+}
+
+.btnEntrar{
+    background-color: #135fa6;
+}
+
+.btnEntrar:hover{
+    background-color: #fff;
+}
