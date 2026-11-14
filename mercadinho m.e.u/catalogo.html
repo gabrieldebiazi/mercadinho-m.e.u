@@ -7,6 +7,49 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header class="barraNavegacao">
+        <h1>Mercadinho</h1>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="carrinho.html">Carrinho</a></li>
+            <li><a href="cadastro.html">Entrar</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section class="tituloPagina">Catálogo</section>
+
+        <section id="filtrosCatalogo">
+            
+            <input type="text" id="filtroNome" placeholder="Filtrar por nome">
+            
+           <div class="botoesCategoria">
+                <button type="button" class="btnFiltro ativo" data-categoria="todos">Todos</button>
+                <button type="button" class="btnFiltro" data-categoria="Alimentos">Alimentos</button>
+                <button type="button" class="btnFiltro" data-categoria="Bebidas">Bebidas</button>
+                <button type="button" class="btnFiltro" data-categoria="Casa">Casa</button>
+                <button type="button" class="btnFiltro" data-categoria="Roupas">Roupas</button>
+            </div>
+             
+        </section>
+
+            
+
+    </main>
+    <footer class="rodape">
+        <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
+
+        <div class="redesSociais">
+            <ul>
+                <li><img src="" alt="Instagram"></li>
+                <li><img src="" alt="LinkedIn"></li>
+                <li><img src="" alt="Facebook"></li>
+            </ul>
+        </div>
+    </footer>
     
     <script src="scripts/catalogo.js"></script>
 </body>
