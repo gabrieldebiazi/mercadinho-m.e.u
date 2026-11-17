@@ -1,3 +1,4 @@
+@import url('https://googleapis.com');
 * {
     margin: 0;
     padding: 0;
@@ -6,6 +7,9 @@
 body {
     background-color: #d8d8d8;
     min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
@@ -18,7 +22,7 @@ main {
     flex: 1;
 }
 
-main img{
+main img {
     width: 100%;
 }
 
