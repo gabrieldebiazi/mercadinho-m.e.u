@@ -49,3 +49,24 @@
     position: relative;
     transform: translateY(-3px);
 }
+
+.rodape{
+    background-color: #2fdd91;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 20%;
+    align-items: center;
+}
+
+.redesSociais{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.redesSociais div{
+    display: flex;
+    justify-content: space-around;
+}
+.redesSociais img{
+    width: 50px;
+}
