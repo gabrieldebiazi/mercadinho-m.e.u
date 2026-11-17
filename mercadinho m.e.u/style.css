@@ -8,6 +8,20 @@ body {
     min-height: 100vh;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    flex: 1;
+}
+
+main img{
+    width: 100%;
+}
+
 .barraNavegacao {
     display: flex;
     justify-content: space-between;
@@ -21,8 +35,6 @@ body {
     display: flex;
     gap: 5px;
 }
-
-
 
 .barraNavegacao .botoes .link {
     text-decoration: none;
@@ -76,16 +88,6 @@ body {
 
 .redesSociais img {
     width: 50px;
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    margin-left: 20%;
-    margin-right: 20%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    flex: 1;
 }
 
 #carrinho {
