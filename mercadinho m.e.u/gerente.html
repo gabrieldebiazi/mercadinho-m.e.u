@@ -6,7 +6,77 @@
     <title>Gerente</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <header class="barraNavegacao">
+        <h1>Mercadinho</h1>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="gerente.html">Painel</a></li>
+            <li><a href="gerenciar.html">Gerenciar</a></li>
+            <li><a href="funcionario.html">Pedidos</a></li>
+            <li><a class="btnSair">Sair</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section class="tituloPagina">Painel do Gerente</section>
+
+        <section class="resumoGeral">
+
+            <div>
+                <h3>Vendas do Dia</h3>
+                <p>R$ 00,00</p>
+            </div>
+            <div>
+                <h3>Pedidos Pendentes</h3>
+                <p>0</p>
+            </div>
+
+            <div>
+                <h3>Produtos Cadastrados</h3>
+                <p>0</p>
+            </div>
+
+            <div>
+                <h3>Estoque Baixo</h3>
+                <p>0</p>
+            </div>
+        </section>
+
+        <section class="atalhosGerente">
+            <h2>Ações Rápidas</h2>
+
+            <div>
+                <div>
+                    <h3>Gerenciar Produtos e Estoque</h3>
+                    <p>Cadastre novos itens, altere preços ou atualize quantidades.</p>
+                    <a href="gerenciar.html">Acessar Gerenciamento</a>
+                </div>
+
+                <div>
+                    <h3>Acompanhar Pedidos</h3>
+                    <p>Veja os pedidos em andamento e o status de retirada ou entrega.</p>
+                    <a href="funcionario.html">Ver Pedidos</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="alertasEstoque">
+            <h2>Produtos com Estoque Baixo</h2>
+
+            <ul>
+                <li>Arroz Branco 5kg - 3 unidades restantes</li>
+                <li>Suco de Laranja 1L - 2 unidades restantes</li>
+            </ul>
+        </section>
+    </main>
+
+
+
+
     
     <script src="scripts/gerente.js"></script>
 </body>
