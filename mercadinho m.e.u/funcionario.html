@@ -6,7 +6,89 @@
     <title>Funcionário</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <header class="barraNavegacao"> 
+        <h1>Mercadinho</h1>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="funcionario.html">Pedidos</a></li>
+            <li><a class="btnSair">Sair</a></li>
+        </ul>
+    </header>
+
+
+    <main>
+        <section class="tituloPagina">Painel do Funcionário</section>
+
+        <section class="filtrosPedidos">
+            <button>Todos</button>
+            <button>Pendentes</button>
+            <button>Em Separação</button>
+            <button>Prontos para Retirada</button>
+            <button>Concluídos</button>
+        </section>
+
+        <section class="listaPedidos">
+            <div>
+                <h2>Pedido #0001</h2>
+                <p>Cliente: Nome do Cliente</p>
+                <p>Tipo: Retirada no Mercadinho</p>
+                <p>Pagamento: PIX</p>
+
+                <ul>
+                    <li>2x Arroz Branco 5kg</li>
+                    <li>1x Suco de Laranja 1L</li>
+                </ul>
+
+                <p>Total: R$ 57,79</p>
+                <p>Status: Pendente</p>
+
+
+                <div>
+                    <button>Iniciar Separação</button>
+                    <button>Marcar como Pronto</button>
+                    <button>Concluir Pedido</button>
+                </div>
+            </div>
+
+            <div>
+                <h2>Pedido #0002</h2>
+                <p>Cliente: Nome do Cliente</p>
+                <p>Tipo: Entrega em Casa</p>
+                <p>Endereço: Rua Exemplo, 123</p>
+                <p>Pagamento: Cartão de Crédito</p>
+                                                                               
+                <ul>
+                    <li>1x Camiseta Básica</li>
+                </ul>
+
+                <p>Total: R$ 44,90</p>
+                <p>Status: Em Separação</p>
+
+                <div>
+                    <button>Marcar como Pronto</button>
+                    <button>Concluir Pedido</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
+
+        <div class="redesSociais">
+            <p>Nos siga em nossas redes sociais</p>
+            <div>
+                <img src="imagens/instagram.png" alt="Instagram">
+                <img src="imagens/linkedin.png" alt="LinkedIn">
+                <img src="imagens/facebook.png" alt="Facebook">
+            </div>
+        </div>
+    </footer>
     
     <script src="scripts/funcionario.js"></script>
 </body>
