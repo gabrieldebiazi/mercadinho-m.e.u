@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,25 +12,25 @@
     <header class="barraNavegacao">
         <h1>Mercadinho</h1>
 
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
-            <li><a href="gerente.html">Painel</a></li>
-            <li><a href="gerenciar.html">Gerenciar</a></li>
-            <li><a href="funcionario.html">Pedidos</a></li>
-            <li><a class="btnSair">Sair</a></li>
-        </ul>
+        <div class="botoes">
+            <a class="link" href="index.html">Home</a>
+            <a class="link" href="catalogo.html">Catálogo</a>
+            <a class="link ativo" href="gerente.html">Painel</a>
+            <a class="link" href="gerenciar.html">Gerenciar</a>
+            <a class="link" href="funcionario.html">Pedidos</a>
+            <a class="btnSair">Sair</a>
+        </div>
     </header>
 
     <main>
         <section class="tituloPagina">Painel do Gerente</section>
 
         <section class="resumoGeral">
-
             <div>
                 <h3>Vendas do Dia</h3>
                 <p>R$ 00,00</p>
             </div>
+
             <div>
                 <h3>Pedidos Pendentes</h3>
                 <p>0</p>
@@ -86,7 +87,8 @@
             </div>
         </div>
     </footer>
-            
+
     <script src="scripts/gerente.js"></script>
 </body>
+
 </html>

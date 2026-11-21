@@ -1,82 +1,159 @@
-@import url('https://googleapis.com');
-* {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================
+   1. TOKENS  (mesma paleta de antes: verde, azul e fundo cinza)
+   ========================================================== */
+:root {
+    --verde: #2fdd91;
+    --verde-escuro: #13a666;
+    --azul: #135fa6;
+    --fundo: #d8d8d8;
+    --superficie: #ffffff;
+    --texto: #1c1c1c;
+    --texto-suave: #555555;
+    --borda: #bdbdbd;
+    --alerta: #e0a100;
+
+    --sombra: 0 0 10px #b6b6b6;
+    --raio: 16px;
+    --raio-pequeno: 10px;
+    --transicao: 0.3s;
+
+    --largura: 1100px;
+    /* margem lateral que mantém header/footer alinhados com o <main> */
+    --margem-lateral: max(20px, calc((100% - var(--largura)) / 2));
+}
+
+/* ==========================================================
+   2. BASE
+   ========================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: #d8d8d8;
+    background-color: var(--fundo);
+    color: var(--texto);
     min-height: 100vh;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
     display: flex;
     flex-direction: column;
+}
+
+h1, h2, h3 {
+    line-height: 1.25;
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.4rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+
+main :where(h2, h3) {
+    margin-bottom: 8px;
+}
+
+a {
+    color: var(--azul);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+:focus-visible {
+    outline: 3px solid var(--azul);
+    outline-offset: 2px;
 }
 
 main {
+    flex: 1;
+    width: 100%;
+    max-width: var(--largura);
+    margin: 0 auto;
+    padding: 32px 20px 56px;
     display: flex;
     flex-direction: column;
-    margin-left: 20%;
-    margin-right: 20%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    flex: 1;
+    gap: 32px;
 }
 
-main img {
-    width: 100%;
-}
-
+/* ==========================================================
+   3. CABEÇALHO E RODAPÉ
+   ========================================================== */
 .barraNavegacao {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
-    padding: 10px 20%;
-    background: #2fdd91;
     align-items: center;
-    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px var(--margem-lateral);
+    background: var(--verde);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.barraNavegacao .botoes {
+.barraNavegacao h1 {
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.botoes {
     display: flex;
-    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
 }
 
-.barraNavegacao .botoes .link {
+.link {
+    color: #000;
     text-decoration: none;
-    color: black;
-    padding: 7px;
-    border-radius: 5px;
-    transition: 0.3s;
+    padding: 7px 12px;
+    border-radius: 8px;
+    transition: var(--transicao);
 }
 
-.barraNavegacao .botoes .link:hover {
-    background-color: #13a666;
-    position: relative;
+.link:hover,
+.link.ativo {
+    background-color: var(--verde-escuro);
+}
+
+.link:hover {
     transform: translateY(-3px);
 }
 
-.btnEntrar {
-    background-color: #135fa6;
+.btnEntrar,
+.btnSair {
+    background-color: var(--azul);
+    color: #fff;
     text-decoration: none;
-    color: black;
-    padding: 7px;
-    border-radius: 5px;
-    transition: 0.3s;
-    border: #135fa6 1px solid;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--azul);
+    cursor: pointer;
+    transition: var(--transicao);
 }
 
-.barraNavegacao .btnEntrar:hover {
+.btnEntrar:hover,
+.btnSair:hover {
     background-color: #fff;
-    color: #135fa6;
-    position: relative;
+    color: var(--azul);
     transform: translateY(-3px);
 }
 
 .rodape {
-    background-color: #2fdd91;
+    background-color: var(--verde);
     display: flex;
     justify-content: space-between;
-    padding: 20px 20%;
     align-items: center;
+    gap: 16px;
+    padding: 20px var(--margem-lateral);
 }
 
 .redesSociais {
@@ -91,29 +168,450 @@ main img {
 }
 
 .redesSociais img {
-    width: 50px;
+    width: 40px;
 }
 
+/* ==========================================================
+   4. COMPONENTES REUTILIZÁVEIS
+   ========================================================== */
+
+/* Título de página */
+.tituloPagina {
+    width: fit-content;
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    padding-bottom: 8px;
+    border-bottom: 4px solid var(--verde);
+}
+
+.tituloPagina h1 {
+    font: inherit;
+    letter-spacing: inherit;
+}
+
+/* Cartão: use a classe .card em qualquer elemento novo.
+   Os seletores abaixo aplicam o mesmo visual aos blocos que já existem. */
+.card,
+#listaItens,
+#valoresCarrinho,
+#login,
+#cadastro,
+.checkout form > div,
+.resumoPedido,
+.resumoGeral > div,
+.atalhosGerente > div > div,
+.alertasEstoque,
+.listaPedidos > div,
+.cardProduto {
+    background-color: var(--superficie);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    padding: 24px;
+}
+
+/* Botões */
+button,
+.btn,
+.btnContinuar,
+.btnSecundario,
+.atalhosGerente a {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--verde);
+    color: #000;
+    border: 1px solid var(--verde);
+    border-radius: 12px;
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transicao);
+}
+
+button:hover,
+.btn:hover,
+.btnContinuar:hover,
+.atalhosGerente a:hover {
+    background-color: var(--verde-escuro);
+    border-color: var(--verde-escuro);
+}
+
+.btnSecundario {
+    background-color: transparent;
+    color: var(--azul);
+    border-color: var(--azul);
+}
+
+.btnSecundario:hover {
+    background-color: var(--azul);
+    border-color: var(--azul);
+    color: #fff;
+}
+
+/* Filtros em formato de "chip" (catálogo e pedidos) */
+.btnFiltro,
+.filtrosPedidos button {
+    padding: 8px 16px;
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.btnFiltro:hover,
+.filtrosPedidos button:hover {
+    background-color: var(--superficie);
+    border-color: var(--verde-escuro);
+}
+
+.btnFiltro.ativo,
+.btnFiltro.ativo:hover,
+.filtrosPedidos button.ativo,
+.filtrosPedidos button.ativo:hover {
+    background-color: var(--verde);
+    border-color: var(--verde);
+    font-weight: 700;
+}
+
+/* Formulários */
+label {
+    display: block;
+    font-weight: 600;
+    margin: 14px 0 6px;
+}
+
+label:has(input[type="radio"]),
+label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    margin: 8px 0;
+}
+
+input:not([type="radio"]):not([type="checkbox"]),
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-pequeno);
+    font: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--azul);
+}
+
+/* ==========================================================
+   5. PÁGINAS
+   ========================================================== */
+
+/* ---------- Home ---------- */
+.hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 40px;
+    background-color: var(--superficie);
+    border-radius: 24px;
+    box-shadow: var(--sombra);
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1;
+}
+
+.hero p {
+    margin-top: 16px;
+    max-width: 46ch;
+    font-size: 1.1rem;
+    color: var(--texto-suave);
+}
+
+.heroAcoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.heroImagem {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--raio);
+}
+
+.secao {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.secao > p {
+    color: var(--texto-suave);
+}
+
+.categorias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.cardCategoria {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 24px;
+    background-color: var(--superficie);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transicao);
+}
+
+.cardCategoria:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px #a5a5a5;
+}
+
+.cardCategoria .iconeCategoria {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 6px;
+    background-color: rgba(47, 221, 145, 0.25);
+    border-radius: 50%;
+    font-size: 1.6rem;
+}
+
+.cardCategoria h3 {
+    margin: 0;
+}
+
+.cardCategoria p {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+.passos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    list-style: none;
+    counter-reset: passo;
+}
+
+.passos li {
+    position: relative;
+    padding: 24px 24px 24px 76px;
+    background-color: var(--superficie);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    counter-increment: passo;
+}
+
+.passos li::before {
+    content: counter(passo);
+    position: absolute;
+    left: 24px;
+    top: 24px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    background-color: var(--verde);
+    border-radius: 50%;
+    font-weight: 800;
+}
+
+.passos strong {
+    display: block;
+}
+
+.passos span {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+.destaqueLoja {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+}
+
+.destaqueLoja img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+.destaqueLoja p {
+    color: var(--texto-suave);
+    margin-bottom: 20px;
+}
+
+/* ---------- Sobre ---------- */
+.paginaCabecalho {
+    max-width: 62ch;
+}
+
+.paginaCabecalho p {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: var(--texto-suave);
+}
+
+.bannerImagem {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: var(--sombra);
+}
+
+.sobreNos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.sobreNos > div {
+    padding: 28px 24px;
+    background-color: var(--superficie);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+.sobreNos .icone {
+    width: 56px;
+    height: 56px;
+    padding: 12px;
+    margin-bottom: 16px;
+    background-color: rgba(47, 221, 145, 0.25);
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.sobreNos p {
+    color: var(--texto-suave);
+}
+
+.localizacao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 32px;
+    background-color: var(--superficie);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+
+}
+
+.localizacao p {
+    color: var(--texto-suave);
+}
+
+.localizacao a{
+    margin-top: 10%;
+}
+
+.localizacao .mapa {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--raio-pequeno);
+}
+
+.contato {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 40px 24px;
+    background-color: var(--verde);
+    border-radius: var(--raio);
+    text-align: center;
+}
+
+.contato .iconeContato {
+    width: 48px;
+    margin-bottom: 8px;
+}
+
+.contato a {
+    color: #000;
+    font-weight: 600;
+}
+
+/* ---------- Catálogo ---------- */
+.filtrosCatalogo {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.botoesCategoria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Sugestão de classes para os produtos gerados pelo catalogo.js */
+.gridProdutos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.cardProduto {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+}
+
+.cardProduto img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--raio-pequeno);
+}
+
+.cardProduto .preco {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--verde-escuro);
+}
+
+/* ---------- Carrinho ---------- */
 #carrinho {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
 }
 
 #listaItens {
-    background-color: #fff;
-    width: 60%;
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: #b6b6b6 0px 0px 10px;
-
+    flex: 1 1 auto;
 }
 
 #valoresCarrinho {
-    background-color: #fff;
-    width: 30%;
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: #b6b6b6 0px 0px 10px;
+    flex: 0 0 340px;
 }
 
 #valoresCarrinho .subtitulo {
@@ -124,23 +622,200 @@ main img {
 .valores {
     display: flex;
     flex-direction: column;
+    gap: 8px;
     margin-top: 20px;
-    gap: 5px;
 }
 
-.btnContinuar {
-    padding: 20px 40px;
-    background-color: #2fdd91;
-    margin-top: 15px;
-    border-radius: 15px;
+.valores > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.valores .btnContinuar {
+    margin-top: 12px;
+    padding: 16px 40px;
+}
+
+/* ---------- Login / Cadastro ---------- */
+#login,
+#cadastro {
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+#login form,
+#cadastro form {
+    display: flex;
+    flex-direction: column;
+}
+
+#login button,
+#cadastro button {
+    margin-top: 24px;
+}
+
+#login h2 {
+    margin: 20px 0 0;
+    font-size: 1rem;
+    font-weight: 500;
     text-align: center;
-    text-decoration: none;
-    color: #000;
-    transition: 0.3s;
-
 }
 
-.btnContinuar:hover {
-    background-color: #13a666;
+/* ---------- Checkout ---------- */
+.checkout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
 
+.checkout form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.resumoPedido ul {
+    list-style: none;
+    margin: 12px 0;
+}
+
+.resumoPedido li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.resumoPedido > div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+/* ---------- Painel do Gerente ---------- */
+.resumoGeral {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.resumoGeral h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+}
+
+.resumoGeral p {
+    margin-top: 4px;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.atalhosGerente {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.atalhosGerente > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.atalhosGerente > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.atalhosGerente > div > div p {
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+}
+
+.alertasEstoque ul {
+    list-style: none;
+}
+
+.alertasEstoque li {
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    background-color: rgba(224, 161, 0, 0.12);
+    border-left: 4px solid var(--alerta);
+    border-radius: 8px;
+}
+
+/* ---------- Painel do Funcionário ---------- */
+.filtrosPedidos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.listaPedidos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.listaPedidos p {
+    margin-bottom: 4px;
+}
+
+.listaPedidos ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.listaPedidos > div > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.listaPedidos button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+}
+
+/* ==========================================================
+   6. RESPONSIVO
+   ========================================================== */
+@media (max-width: 800px) {
+    .hero,
+    .destaqueLoja,
+    .localizacao,
+    .checkout {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 24px;
+    }
+
+    #carrinho {
+        flex-direction: column;
+    }
+
+    #listaItens,
+    #valoresCarrinho {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+
+    .rodape {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
 }

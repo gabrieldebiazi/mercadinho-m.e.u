@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,28 +9,26 @@
 </head>
 
 <body>
-
-    <header class="barraNavegacao"> 
+    <header class="barraNavegacao">
         <h1>Mercadinho</h1>
 
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
-            <li><a href="funcionario.html">Pedidos</a></li>
-            <li><a class="btnSair">Sair</a></li>
-        </ul>
+        <div class="botoes">
+            <a class="link" href="index.html">Home</a>
+            <a class="link" href="catalogo.html">Catálogo</a>
+            <a class="link ativo" href="funcionario.html">Pedidos</a>
+            <a class="btnSair">Sair</a>
+        </div>
     </header>
-
 
     <main>
         <section class="tituloPagina">Painel do Funcionário</section>
 
         <section class="filtrosPedidos">
-            <button>Todos</button>
-            <button>Pendentes</button>
-            <button>Em Separação</button>
-            <button>Prontos para Retirada</button>
-            <button>Concluídos</button>
+            <button type="button" class="ativo">Todos</button>
+            <button type="button">Pendentes</button>
+            <button type="button">Em Separação</button>
+            <button type="button">Prontos para Retirada</button>
+            <button type="button">Concluídos</button>
         </section>
 
         <section class="listaPedidos">
@@ -47,11 +46,10 @@
                 <p>Total: R$ 57,79</p>
                 <p>Status: Pendente</p>
 
-
                 <div>
-                    <button>Iniciar Separação</button>
-                    <button>Marcar como Pronto</button>
-                    <button>Concluir Pedido</button>
+                    <button type="button">Iniciar Separação</button>
+                    <button type="button">Marcar como Pronto</button>
+                    <button type="button">Concluir Pedido</button>
                 </div>
             </div>
 
@@ -61,7 +59,7 @@
                 <p>Tipo: Entrega em Casa</p>
                 <p>Endereço: Rua Exemplo, 123</p>
                 <p>Pagamento: Cartão de Crédito</p>
-                                                                               
+
                 <ul>
                     <li>1x Camiseta Básica</li>
                 </ul>
@@ -70,8 +68,8 @@
                 <p>Status: Em Separação</p>
 
                 <div>
-                    <button>Marcar como Pronto</button>
-                    <button>Concluir Pedido</button>
+                    <button type="button">Marcar como Pronto</button>
+                    <button type="button">Concluir Pedido</button>
                 </div>
             </div>
         </section>
@@ -89,7 +87,8 @@
             </div>
         </div>
     </footer>
-    
+
     <script src="scripts/funcionario.js"></script>
 </body>
+
 </html>

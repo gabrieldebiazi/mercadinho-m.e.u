@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,10 @@
 
 <body>
     <header class="barraNavegacao">
-
         <h1>Mercadinho</h1>
 
         <div class="botoes">
-            <a class="link" href="index.html">Home</a>
+            <a class="link ativo" href="index.html">Home</a>
             <a class="link" href="catalogo.html">Catálogo</a>
             <a class="link" href="sobre.html">Sobre</a>
             <a class="link" href="carrinho.html">Carrinho</a>
@@ -23,44 +22,84 @@
     </header>
 
     <main>
-        <h1>Seja bem vindo ao mercadinho mais econômico da cidade!</h1>
+        <section class="hero">
+            <div>
+                <h1>O mercadinho mais econômico da cidade</h1>
+                <p>Alimentos, bebidas, itens para a casa e roupas a preço justo. Monte seu pedido pelo site e
+                    retire na loja ou receba em casa.</p>
 
+                <div class="heroAcoes">
+                    <a class="btn" href="catalogo.html">Ver catálogo</a>
+                    <a class="btnSecundario" href="sobre.html">Conheça a loja</a>
+                </div>
+            </div>
 
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKb7-xTrPzzkmHvqGi_V8R-yknMpL-bRsUeZL5Uqyo6mYOoIK4HdFj2Wnw&s=10"
-            alt="imagemLegal">
+            <img class="heroImagem"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKb7-xTrPzzkmHvqGi_V8R-yknMpL-bRsUeZL5Uqyo6mYOoIK4HdFj2Wnw&s=10"
+                alt="Prateleiras do mercadinho com produtos variados">
+        </section>
 
-            <section class="conhecaProdutos">
-                <h2>Conheça nossos produtos!</h2>
-        
-                <section>
-                    <div>
-                        <h3>Alimentos</h3>
-                        <p>Frutas, Legumes e mais</p>
-                    </div>
-        
-                    <div>
-                        <h3>Bebidas</h3>
-                        <p>Água, Leite, Sucos, Refrigerantes e muito mais.</p>
-                    </div>
-        
-                    <div>
-                        <h3>Casa</h3>
-                        <p>Toalhas de Mesa, Produtos de Higiene, Vasilhas e mais.</p>
-                    </div>
-        
-                    <div>
-                        <h3>Roupas</h3>
-                        <p>Camisetas, Chinelos, Calças e mais.</p>
-                    </div>
-        
-                    <button>Nosso Catálogo<button>
-                </section>
-        
-                <img src="https://images.trvl-media.com/place/6061573/750e323b-0044-4925-a8ca-4a70e4dda929.jpg"
-                    alt="imagemProdutos">
-            </section>
+        <section class="secao conhecaProdutos">
+            <h2>Conheça nossos produtos</h2>
+
+            <div class="categorias">
+                <a class="cardCategoria" href="catalogo.html">
+                    <span class="iconeCategoria" aria-hidden="true">🥦</span>
+                    <h3>Alimentos</h3>
+                    <p>Frutas, legumes e mais.</p>
+                </a>
+
+                <a class="cardCategoria" href="catalogo.html">
+                    <span class="iconeCategoria" aria-hidden="true">🥤</span>
+                    <h3>Bebidas</h3>
+                    <p>Água, leite, sucos, refrigerantes e muito mais.</p>
+                </a>
+
+                <a class="cardCategoria" href="catalogo.html">
+                    <span class="iconeCategoria" aria-hidden="true">🏠</span>
+                    <h3>Casa</h3>
+                    <p>Toalhas de mesa, produtos de higiene, vasilhas e mais.</p>
+                </a>
+
+                <a class="cardCategoria" href="catalogo.html">
+                    <span class="iconeCategoria" aria-hidden="true">👕</span>
+                    <h3>Roupas</h3>
+                    <p>Camisetas, chinelos, calças e mais.</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="secao">
+            <h2>Como funciona</h2>
+
+            <ol class="passos">
+                <li>
+                    <strong>Escolha seus produtos</strong>
+                    <span>Navegue pelo catálogo e adicione ao carrinho.</span>
+                </li>
+                <li>
+                    <strong>Finalize o pedido</strong>
+                    <span>Informe seus dados e escolha a forma de pagamento.</span>
+                </li>
+                <li>
+                    <strong>Retire ou receba</strong>
+                    <span>Busque no mercadinho ou receba em casa.</span>
+                </li>
+            </ol>
+        </section>
+
+        <section class="destaqueLoja">
+            <img src="https://images.trvl-media.com/place/6061573/750e323b-0044-4925-a8ca-4a70e4dda929.jpg"
+                alt="Vista da região central de Maringá">
+
+            <div>
+                <h2>Venha nos visitar</h2>
+                <p>Estamos no Centro de Maringá, na Av. Colombo Hipotética, n° 67. Passe por aqui e conheça de
+                    perto nossas ofertas.</p>
+                <a class="btn" href="sobre.html">Como chegar</a>
+            </div>
+        </section>
     </main>
-
 
     <footer class="rodape">
         <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
