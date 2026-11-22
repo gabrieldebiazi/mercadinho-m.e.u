@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,22 +23,26 @@
     <main>
         <section class="tituloPagina">Detalhes do Produto</section>
 
-        <section class="card">
-            <img src="" alt="Imagem do Produto">
+        <p class="mensagem" id="produtoMsg" role="status" hidden></p>
+
+        <section class="card produtoDetalhe" id="produtoConteudo" hidden>
+            <img id="produtoImagem" alt="" hidden>
+            <div class="semImagem" id="produtoSemImagem" hidden>Sem imagem</div>
 
             <div>
-                <p>Categoria</p>
-                <h1>Nome do Produto</h1>
-                <p>R$ 0,00</p>
-                <p>Descrição detalhada do produto, peso, marca ou informações importantes para o cliente.</p>
+                <p class="categoriaProduto" id="produtoCategoria"></p>
+                <h1 id="produtoNome"></h1>
+                <p class="preco" id="produtoPreco"></p>
+                <p id="produtoDescricao"></p>
+                <p id="produtoEstoque"></p>
 
                 <div>
-                    <label>Quantidade</label>
-                    <input type="number" value="1" min="1">
+                    <label for="produtoQtd">Quantidade</label>
+                    <input type="number" id="produtoQtd" value="1" min="1">
                 </div>
 
-                <div>
-                    <button>Adicionar ao Carrinho</button>
+                <div class="acoes">
+                    <button type="button" id="btnAdicionar">Adicionar ao Carrinho</button>
                     <a class="btnSecundario" href="catalogo.html">Voltar ao Catálogo</a>
                 </div>
             </div>
@@ -46,7 +50,7 @@
     </main>
 
     <footer class="rodape">
-        
+
         <div>
             <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
             <a href="ajuda.html">Central de Ajuda</a>
@@ -61,7 +65,9 @@
             </div>
         </div>
     </footer>
-    
+
+    <script src="scripts/api.js"></script>
+    <script src="scripts/utils.js"></script>
     <script src="scripts/produto.js"></script>
 </body>
 </html>
