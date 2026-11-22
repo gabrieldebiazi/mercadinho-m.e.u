@@ -58,8 +58,13 @@
                     </div>
 
                     <div class="campoLargo">
-                        <label for="imagemUrl">URL da imagem (opcional)</label>
-                        <input type="url" id="imagemUrl" placeholder="https://...">
+                        <label for="imagemArquivo">Imagem do produto (JPG, PNG ou WebP, até 2 MB)</label>
+                        <input type="file" id="imagemArquivo" accept="image/jpeg,image/png,image/webp">
+
+                        <label for="imagemUrl">Ou o endereço de uma imagem (opcional)</label>
+                        <input type="text" id="imagemUrl" placeholder="https://... ou imagens/produtos/arroz.jpg">
+
+                        <img class="previaImagem" id="previaImagem" alt="Prévia da imagem" hidden>
                     </div>
 
                     <div class="campoLargo">

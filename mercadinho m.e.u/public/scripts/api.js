@@ -3,11 +3,14 @@
 async function api(caminho, { method = 'GET', corpo } = {}) {
     let resposta;
 
+    // FormData (upload de arquivo) é enviado como está; o navegador define o Content-Type
+    const ehFormData = corpo instanceof FormData;
+
     try {
         resposta = await fetch('/api' + caminho, {
             method,
-            headers: corpo ? { 'Content-Type': 'application/json' } : {},
-            body: corpo ? JSON.stringify(corpo) : undefined,
+            headers: corpo && !ehFormData ? { 'Content-Type': 'application/json' } : {},
+            body: corpo ? (ehFormData ? corpo : JSON.stringify(corpo)) : undefined,
             credentials: 'same-origin'
         });
     } catch {

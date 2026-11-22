@@ -6,6 +6,9 @@ const corpoTabela = document.getElementById('corpoTabela');
 const btnSalvar = document.getElementById('btnSalvar');
 const btnCancelar = document.getElementById('btnCancelar');
 const tituloForm = document.getElementById('tituloForm');
+const inputArquivo = document.getElementById('imagemArquivo');
+const inputUrl = document.getElementById('imagemUrl');
+const previa = document.getElementById('previaImagem');
 
 const ESTOQUE_BAIXO = 5;
 let produtos = [];
@@ -61,8 +64,28 @@ function renderTabela() {
         : '<tr><td colspan="5">Nenhum produto cadastrado.</td></tr>';
 }
 
+function mostrarPrevia(src) {
+    if (src) {
+        previa.src = src;
+        previa.hidden = false;
+    } else {
+        previa.removeAttribute('src');
+        previa.hidden = true;
+    }
+}
+
+inputArquivo.addEventListener('change', () => {
+    const arquivo = inputArquivo.files[0];
+    mostrarPrevia(arquivo ? URL.createObjectURL(arquivo) : inputUrl.value.trim());
+});
+
+inputUrl.addEventListener('input', () => {
+    if (!inputArquivo.files[0]) mostrarPrevia(inputUrl.value.trim());
+});
+
 function limparFormulario() {
     form.reset();
+    mostrarPrevia('');
     document.getElementById('produtoId').value = '';
     tituloForm.textContent = 'Cadastrar novo produto';
     btnSalvar.textContent = 'Cadastrar produto';
@@ -75,7 +98,8 @@ function editar(produto) {
     document.getElementById('categoria').value = produto.categoria;
     document.getElementById('preco').value = produto.preco;
     document.getElementById('estoque').value = produto.estoque;
-    document.getElementById('imagemUrl').value = produto.imagem_url || '';
+    inputUrl.value = produto.imagem_url || '';
+    mostrarPrevia(produto.imagem_url);
     document.getElementById('descricao').value = produto.descricao || '';
 
     tituloForm.textContent = 'Editar produto';
@@ -92,7 +116,7 @@ form.addEventListener('submit', async e => {
         categoria: document.getElementById('categoria').value,
         preco: Number(document.getElementById('preco').value),
         estoque: parseInt(document.getElementById('estoque').value, 10),
-        imagem_url: document.getElementById('imagemUrl').value.trim() || null,
+        imagem_url: inputUrl.value.trim() || null,
         descricao: document.getElementById('descricao').value.trim() || null
     };
 
@@ -100,6 +124,14 @@ form.addEventListener('submit', async e => {
     btnSalvar.disabled = true;
 
     try {
+        // se escolheu um arquivo, envia primeiro e usa o endereço devolvido pelo servidor
+        if (inputArquivo.files[0]) {
+            const arquivo = new FormData();
+            arquivo.append('imagem', inputArquivo.files[0]);
+            const { url } = await api('/upload', { method: 'POST', corpo: arquivo });
+            dados.imagem_url = url;
+        }
+
         if (id) await api(`/produtos/${id}`, { method: 'PUT', corpo: dados });
         else await api('/produtos', { method: 'POST', corpo: dados });
     } catch (erro) {

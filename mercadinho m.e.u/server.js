@@ -1,11 +1,14 @@
 require('dotenv').config();
 
 const path = require('path');
+const fs = require('fs');
+const crypto = require('crypto');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 const { Pool, types } = require('pg');
 
 if (!process.env.DATABASE_URL || !process.env.JWT_SECRET) {
@@ -124,6 +127,42 @@ app.get('/api/me', async (req, res) => {
     res.json({ usuario: await carregarUsuario(req) });
 });
 
+/* ---------- Upload de imagens ---------- */
+
+const PASTA_UPLOADS = path.join(__dirname, 'public', 'uploads', 'produtos');
+fs.mkdirSync(PASTA_UPLOADS, { recursive: true });
+
+const EXTENSOES = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' };
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: PASTA_UPLOADS,
+        // nome gerado pelo servidor: nunca usamos o nome enviado pelo usuário
+        filename: (req, file, cb) => cb(null, crypto.randomUUID() + EXTENSOES[file.mimetype])
+    }),
+    limits: { fileSize: 2 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => cb(null, Boolean(EXTENSOES[file.mimetype]))
+});
+
+// Apaga do disco a imagem antiga (só se ela foi enviada por upload)
+function apagarImagemLocal(url) {
+    if (!url || !url.startsWith('/uploads/produtos/')) return;
+    fs.unlink(path.join(PASTA_UPLOADS, path.basename(url)), () => {});
+}
+
+// A checagem de gerente vem ANTES do multer: quem não é gerente não grava nada no disco
+app.post('/api/upload', exigirPapel('gerente'), (req, res) => {
+    upload.single('imagem')(req, res, err => {
+        if (err) {
+            return erro(res, 400, err.code === 'LIMIT_FILE_SIZE'
+                ? 'A imagem deve ter no máximo 2 MB.'
+                : 'Não foi possível enviar a imagem.');
+        }
+        if (!req.file) return erro(res, 400, 'Envie uma imagem JPG, PNG ou WebP.');
+        res.status(201).json({ url: '/uploads/produtos/' + req.file.filename });
+    });
+});
+
 /* ---------- Produtos ---------- */
 
 // GET /api/produtos            -> todos
@@ -161,7 +200,7 @@ function validarProduto(corpo) {
     if (!CATEGORIAS.includes(corpo.categoria)) return { mensagem: 'Categoria inválida.' };
     if (!Number.isFinite(preco) || preco < 0 || preco > 1000000) return { mensagem: 'Preço inválido.' };
     if (!Number.isInteger(estoque) || estoque < 0) return { mensagem: 'Estoque inválido.' };
-    if (imagem_url && !/^https?:\/\//i.test(imagem_url)) return { mensagem: 'A URL da imagem deve começar com http:// ou https://.' };
+    if (imagem_url && !/^(https?:\/\/|\/uploads\/|imagens\/)/i.test(imagem_url)) return { mensagem: 'Endereço de imagem inválido. Use http(s)://..., imagens/... ou envie um arquivo.' };
 
     return { dados: [nome, corpo.categoria, preco, estoque, imagem_url, descricao] };
 }
@@ -184,12 +223,16 @@ app.put('/api/produtos/:id', exigirPapel('gerente'), async (req, res) => {
     const { dados, mensagem } = validarProduto(req.body);
     if (mensagem) return erro(res, 400, mensagem);
 
+    const { rows: anteriores } = await pool.query('select imagem_url from produtos where id = $1', [id]);
+
     const { rows } = await pool.query(
         `update produtos set nome = $1, categoria = $2, preco = $3, estoque = $4,
                 imagem_url = $5, descricao = $6
          where id = $7 returning ${COLUNAS_PRODUTO}`, [...dados, id]
     );
     if (!rows[0]) return erro(res, 404, 'Produto não encontrado.');
+
+    if (anteriores[0].imagem_url !== rows[0].imagem_url) apagarImagemLocal(anteriores[0].imagem_url);
     res.json(rows[0]);
 });
 
@@ -197,8 +240,10 @@ app.delete('/api/produtos/:id', exigirPapel('gerente'), async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id)) return erro(res, 404, 'Produto não encontrado.');
 
-    const { rowCount } = await pool.query('delete from produtos where id = $1', [id]);
-    if (!rowCount) return erro(res, 404, 'Produto não encontrado.');
+    const { rows } = await pool.query('delete from produtos where id = $1 returning imagem_url', [id]);
+    if (!rows[0]) return erro(res, 404, 'Produto não encontrado.');
+
+    apagarImagemLocal(rows[0].imagem_url);
     res.status(204).end();
 });
 
