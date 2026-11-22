@@ -69,12 +69,4 @@ function atualizarContadorCarrinho() {
     link.textContent = total ? `Carrinho (${total})` : 'Carrinho';
 }
 
-/* ---------- Botão Sair (páginas de gerente e funcionário) ---------- */
-
-document.querySelector('.btnSair')?.addEventListener('click', async e => {
-    e.preventDefault();
-    await api('/logout', { method: 'POST' }).catch(() => {});
-    location.href = 'login.html';
-});
-
 atualizarContadorCarrinho();

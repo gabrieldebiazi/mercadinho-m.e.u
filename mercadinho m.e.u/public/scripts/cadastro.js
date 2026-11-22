@@ -16,7 +16,7 @@ form.addEventListener('submit', async e => {
 
     try {
         // o servidor já deixa o usuário logado depois de cadastrar
-        await api('/cadastro', {
+        const { usuario } = await api('/cadastro', {
             method: 'POST',
             corpo: {
                 nome: document.getElementById('nome').value.trim(),
@@ -25,6 +25,7 @@ form.addEventListener('submit', async e => {
             }
         });
 
+        salvarUsuarioSessao(usuario);
         mostrarMensagem(msg, 'Cadastro realizado! Redirecionando...', 'sucesso');
         setTimeout(() => { location.href = 'catalogo.html'; }, 1200);
     } catch (erro) {

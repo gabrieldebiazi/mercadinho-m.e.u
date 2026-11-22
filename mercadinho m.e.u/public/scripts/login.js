@@ -16,6 +16,8 @@ form.addEventListener('submit', async e => {
             }
         });
 
+        salvarUsuarioSessao(usuario);
+
         const destinos = { gerente: 'gerente.html', funcionario: 'funcionario.html' };
         location.href = destinos[usuario.papel] || 'catalogo.html';
     } catch (erro) {

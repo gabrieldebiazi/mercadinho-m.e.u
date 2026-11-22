@@ -1,0 +1,102 @@
+const CHAVE_USUARIO = 'usuario';
+
+function lerUsuarioSessao() {
+    try {
+        const usuario = JSON.parse(sessionStorage.getItem(CHAVE_USUARIO));
+        return usuario && typeof usuario.papel === 'string' ? usuario : null;
+    } catch {
+        return null;
+    }
+}
+
+function salvarUsuarioSessao(usuario) {
+    try {
+        if (usuario) {
+            sessionStorage.setItem(CHAVE_USUARIO, JSON.stringify({ nome: usuario.nome, papel: usuario.papel }));
+        } else {
+            sessionStorage.removeItem(CHAVE_USUARIO);
+        }
+    } catch {
+        // sessionStorage indisponível: a barra continua funcionando pelo servidor
+    }
+}
+
+(function () {
+    const barra = document.querySelector('.barraNavegacao');
+    const botoes = barra?.querySelector('.botoes');
+    if (!botoes) return;
+
+    const LINKS = {
+        home: ['Home', 'index.html'],
+        catalogo: ['Catálogo', 'catalogo.html'],
+        sobre: ['Sobre', 'sobre.html'],
+        carrinho: ['Carrinho', 'carrinho.html'],
+        painel: ['Painel', 'gerente.html'],
+        gerenciar: ['Gerenciar', 'gerenciar.html'],
+        pedidos: ['Pedidos', 'funcionario.html']
+    };
+
+    const MENU_POR_PAPEL = {
+        gerente: ['home', 'catalogo', 'painel', 'gerenciar', 'pedidos'],
+        funcionario: ['home', 'catalogo', 'pedidos'],
+        cliente: ['home', 'catalogo', 'sobre', 'carrinho'],
+        visitante: ['home', 'catalogo', 'sobre', 'carrinho']
+    };
+
+    // páginas que não têm link próprio no menu marcam outro link como ativo
+    const ATIVO_COMO = { 'checkout.html': 'carrinho.html' };
+
+    const pagina = location.pathname.split('/').pop() || 'index.html';
+    const paginaAtiva = ATIVO_COMO[pagina] || pagina;
+
+    function renderizar(usuario) {
+        const papel = usuario?.papel in MENU_POR_PAPEL ? usuario.papel : 'visitante';
+
+        const links = MENU_POR_PAPEL[papel].map(chave => {
+            const [texto, href] = LINKS[chave];
+            return `<a class="link${href === paginaAtiva ? ' ativo' : ''}" href="${href}">${texto}</a>`;
+        }).join('');
+
+        const conta = usuario
+            ? `<span class="saudacao">Olá, ${esc(String(usuario.nome ?? '').split(' ')[0])}</span>
+               <a class="btnSair" href="#">Sair</a>`
+            : `<a class="btnEntrar${pagina === 'login.html' ? ' ativo' : ''}" href="login.html">Entrar</a>`;
+
+        botoes.innerHTML = links + conta;
+
+        if (typeof atualizarContadorCarrinho === 'function') atualizarContadorCarrinho();
+    }
+
+    barra.addEventListener('click', async e => {
+        if (!e.target.closest('.btnSair')) return;
+        e.preventDefault();
+
+        try {
+            await api('/logout', { method: 'POST' });
+        } catch {
+            alert('Não foi possível sair. Tente novamente.');
+            return;
+        }
+
+        salvarUsuarioSessao(null);
+        location.href = 'login.html';
+    });
+
+    (async () => {
+        const emCache = lerUsuarioSessao();
+
+        if (emCache) renderizar(emCache);
+        else botoes.style.visibility = 'hidden'; // evita mostrar "Entrar" por um instante para quem já está logado
+
+        let usuario = emCache;
+        try {
+            ({ usuario } = await api('/me'));
+            salvarUsuarioSessao(usuario);
+        } catch {
+            // sem conexão com o servidor: mantém o que já estava na tela
+        }
+
+        renderizar(usuario);
+        botoes.style.visibility = '';
+    })();
+})();
