@@ -24,6 +24,16 @@ const app = express();
 
 const PRODUCAO = process.env.NODE_ENV === 'production';
 const CATEGORIAS = ['Alimentos', 'Bebidas', 'Casa', 'Roupas'];
+const PAGAMENTOS = ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Dinheiro'];
+const TAXA_ENTREGA = Math.max(0, Number(process.env.TAXA_ENTREGA) || 0);
+// status atual -> para quais status o pedido pode ir
+const TRANSICOES = {
+    pendente: ['em_separacao', 'cancelado'],
+    em_separacao: ['pronto', 'cancelado'],
+    pronto: ['concluido', 'cancelado'],
+    concluido: [],
+    cancelado: []
+};
 const COLUNAS_PRODUTO = 'id, nome, categoria, preco, estoque, imagem_url, descricao';
 const OPCOES_COOKIE = { httpOnly: true, sameSite: 'lax', secure: PRODUCAO };
 // usado para gastar o mesmo tempo quando o e-mail não existe (evita descobrir e-mails cadastrados)
@@ -61,13 +71,17 @@ async function carregarUsuario(req) {
     return rows[0] || null;
 }
 
-const exigirPapel = papel => async (req, res, next) => {
+// exigirPapel('gerente', 'funcionario') aceita qualquer um dos papéis informados
+const exigirPapel = (...papeis) => async (req, res, next) => {
     const usuario = await carregarUsuario(req);
     if (!usuario) return erro(res, 401, 'Faça login para continuar.');
-    if (usuario.papel !== papel) return erro(res, 403, 'Acesso restrito.');
+    if (papeis.length && !papeis.includes(usuario.papel)) return erro(res, 403, 'Acesso restrito.');
     req.usuario = usuario;
     next();
 };
+
+// qualquer pessoa logada
+const exigirLogin = exigirPapel();
 
 const limiteAuth = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -245,6 +259,197 @@ app.delete('/api/produtos/:id', exigirPapel('gerente'), async (req, res) => {
 
     apagarImagemLocal(rows[0].imagem_url);
     res.status(204).end();
+});
+
+/* ---------- Pedidos ---------- */
+
+class ErroNegocio extends Error {
+    constructor(mensagem, status = 400) {
+        super(mensagem);
+        this.status = status;
+    }
+}
+
+// Executa fn dentro de uma transação: tudo é gravado junto ou nada é gravado
+async function emTransacao(fn) {
+    const cliente = await pool.connect();
+    try {
+        await cliente.query('begin');
+        const resultado = await fn(cliente);
+        await cliente.query('commit');
+        return resultado;
+    } catch (e) {
+        await cliente.query('rollback').catch(() => {});
+        throw e;
+    } finally {
+        cliente.release();
+    }
+}
+
+const SELECT_PEDIDO = `
+    select p.id, p.usuario_id, p.nome_cliente, p.telefone, p.tipo, p.endereco, p.pagamento,
+           p.status, p.subtotal, p.taxa_entrega, p.total, p.criado_em,
+           coalesce(
+               json_agg(json_build_object('nome', i.nome, 'quantidade', i.quantidade,
+                                          'preco_unitario', i.preco_unitario) order by i.id)
+               filter (where i.id is not null), '[]'::json) as itens
+    from pedidos p
+    left join pedido_itens i on i.pedido_id = p.id`;
+
+const limitePedidos = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { erro: 'Muitos pedidos em pouco tempo. Tente novamente em alguns minutos.' }
+});
+
+app.get('/api/configuracao', (req, res) => {
+    res.json({ taxaEntrega: TAXA_ENTREGA });
+});
+
+function validarPedido(corpo) {
+    const nome = String(corpo.nome ?? '').trim();
+    const telefone = String(corpo.telefone ?? '').trim();
+    const digitos = telefone.replace(/\D/g, '');
+    const endereco = String(corpo.endereco ?? '').trim();
+    const { tipo, pagamento } = corpo;
+
+    if (!nome || nome.length > 100) return { mensagem: 'Informe o seu nome.' };
+    if (digitos.length < 10 || digitos.length > 11) return { mensagem: 'Informe um telefone válido com DDD.' };
+    if (!['retirada', 'entrega'].includes(tipo)) return { mensagem: 'Escolha retirada ou entrega.' };
+    if (tipo === 'entrega' && (!endereco || endereco.length > 200)) return { mensagem: 'Informe o endereço de entrega.' };
+    if (!PAGAMENTOS.includes(pagamento)) return { mensagem: 'Escolha uma forma de pagamento.' };
+    if (!Array.isArray(corpo.itens) || !corpo.itens.length || corpo.itens.length > 100) {
+        return { mensagem: 'Seu carrinho está vazio.' };
+    }
+
+    // junta itens repetidos somando as quantidades
+    const quantidades = new Map();
+    for (const item of corpo.itens) {
+        const id = Number(item?.id);
+        const qtd = Number(item?.qtd);
+        if (!Number.isInteger(id) || !Number.isInteger(qtd) || qtd < 1 || qtd > 1000) {
+            return { mensagem: 'Itens do carrinho inválidos.' };
+        }
+        quantidades.set(id, (quantidades.get(id) || 0) + qtd);
+    }
+
+    return {
+        nome, telefone, tipo, pagamento,
+        endereco: tipo === 'entrega' ? endereco : null,
+        itens: [...quantidades].map(([id, qtd]) => ({ id, qtd }))
+    };
+}
+
+// O total é calculado AQUI com os preços do banco: o que vem do navegador não é confiável
+app.post('/api/pedidos', limitePedidos, exigirLogin, async (req, res) => {
+    const { mensagem, nome, telefone, tipo, endereco, pagamento, itens } = validarPedido(req.body);
+    if (mensagem) return erro(res, 400, mensagem);
+
+    try {
+        const id = await emTransacao(async cliente => {
+            // trava as linhas dos produtos (em ordem de id) para dois pedidos não venderem o mesmo estoque
+            const ids = itens.map(i => i.id).sort((a, b) => a - b);
+            const { rows } = await cliente.query(
+                'select id, nome, preco, estoque from produtos where id = any($1::int[]) order by id for update', [ids]
+            );
+            const produtos = new Map(rows.map(p => [p.id, p]));
+
+            let subtotal = 0; // em centavos, para não acumular erro de arredondamento
+            for (const item of itens) {
+                const p = produtos.get(item.id);
+                if (!p) throw new ErroNegocio('Um dos produtos do carrinho não está mais disponível.', 409);
+                if (p.estoque < item.qtd) {
+                    throw new ErroNegocio(`Estoque insuficiente para "${p.nome}" (restam ${p.estoque}).`, 409);
+                }
+                subtotal += Math.round(p.preco * 100) * item.qtd;
+            }
+
+            const taxa = tipo === 'entrega' ? Math.round(TAXA_ENTREGA * 100) : 0;
+
+            const { rows: [pedido] } = await cliente.query(
+                `insert into pedidos (usuario_id, nome_cliente, telefone, tipo, endereco, pagamento,
+                                      subtotal, taxa_entrega, total)
+                 values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id`,
+                [req.usuario.id, nome, telefone, tipo, endereco, pagamento,
+                 subtotal / 100, taxa / 100, (subtotal + taxa) / 100]
+            );
+
+            for (const item of itens) {
+                const p = produtos.get(item.id);
+                await cliente.query(
+                    `insert into pedido_itens (pedido_id, produto_id, nome, preco_unitario, quantidade)
+                     values ($1, $2, $3, $4, $5)`,
+                    [pedido.id, p.id, p.nome, p.preco, item.qtd]
+                );
+                await cliente.query('update produtos set estoque = estoque - $1 where id = $2', [item.qtd, p.id]);
+            }
+
+            return pedido.id;
+        });
+
+        res.status(201).json({ id });
+    } catch (e) {
+        if (e instanceof ErroNegocio) return erro(res, e.status, e.message);
+        throw e;
+    }
+});
+
+// Funcionário e gerente veem todos os pedidos (os 200 mais recentes)
+app.get('/api/pedidos', exigirPapel('funcionario', 'gerente'), async (req, res) => {
+    const { rows } = await pool.query(`${SELECT_PEDIDO} group by p.id order by p.criado_em desc limit 200`);
+    rows.forEach(p => delete p.usuario_id);
+    res.json(rows);
+});
+
+// O cliente só enxerga os próprios pedidos; a equipe vê qualquer um
+app.get('/api/pedidos/:id', exigirLogin, async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return erro(res, 404, 'Pedido não encontrado.');
+
+    const { rows } = await pool.query(`${SELECT_PEDIDO} where p.id = $1 group by p.id`, [id]);
+    const pedido = rows[0];
+    const equipe = ['funcionario', 'gerente'].includes(req.usuario.papel);
+
+    if (!pedido || (!equipe && pedido.usuario_id !== req.usuario.id)) {
+        return erro(res, 404, 'Pedido não encontrado.');
+    }
+
+    delete pedido.usuario_id;
+    res.json(pedido);
+});
+
+app.patch('/api/pedidos/:id/status', exigirPapel('funcionario', 'gerente'), async (req, res) => {
+    const id = Number(req.params.id);
+    const novo = req.body.status;
+
+    if (!Number.isInteger(id) || !Object.hasOwn(TRANSICOES, novo)) return erro(res, 400, 'Status inválido.');
+
+    try {
+        await emTransacao(async cliente => {
+            const { rows } = await cliente.query('select status from pedidos where id = $1 for update', [id]);
+            if (!rows[0]) throw new ErroNegocio('Pedido não encontrado.', 404);
+            if (!TRANSICOES[rows[0].status].includes(novo)) {
+                throw new ErroNegocio('Esse pedido não pode mudar para esse status.', 409);
+            }
+
+            if (novo === 'cancelado') {
+                // devolve os itens ao estoque
+                await cliente.query(
+                    `update produtos p set estoque = p.estoque + i.quantidade
+                     from pedido_itens i where i.pedido_id = $1 and i.produto_id = p.id`, [id]
+                );
+            }
+
+            await cliente.query('update pedidos set status = $1 where id = $2', [novo, id]);
+        });
+
+        res.json({ id, status: novo });
+    } catch (e) {
+        if (e instanceof ErroNegocio) return erro(res, e.status, e.message);
+        throw e;
+    }
 });
 
 /* ---------- Erros ---------- */

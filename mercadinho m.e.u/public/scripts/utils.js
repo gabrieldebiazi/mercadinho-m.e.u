@@ -69,4 +69,62 @@ function atualizarContadorCarrinho() {
     link.textContent = total ? `Carrinho (${total})` : 'Carrinho';
 }
 
+/* ---------- Sincronizar carrinho com o banco ---------- */
+
+// Confere preço e estoque atuais (o localStorage pode estar desatualizado).
+// Retorna true se algum item foi removido por indisponibilidade.
+async function sincronizarCarrinho() {
+    const itens = getCarrinho();
+    if (!itens.length) return false;
+
+    let data;
+    try {
+        data = await api('/produtos?ids=' + itens.map(i => i.id).join(','));
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+
+    const atuais = new Map(data.map(p => [p.id, p]));
+
+    const atualizados = itens
+        .filter(i => atuais.has(i.id) && atuais.get(i.id).estoque > 0)
+        .map(i => {
+            const p = atuais.get(i.id);
+            return {
+                ...i,
+                nome: p.nome,
+                preco: Number(p.preco),
+                imagem_url: p.imagem_url,
+                estoque: p.estoque,
+                qtd: Math.min(i.qtd, p.estoque)
+            };
+        });
+
+    salvarCarrinho(atualizados);
+    return atualizados.length < itens.length;
+}
+
+/* ---------- Pedidos ---------- */
+
+const codigoPedido = id => '#' + String(id).padStart(4, '0');
+
+const STATUS_PEDIDO = {
+    pendente: { rotulo: 'Pendente', classe: 'atencao' },
+    em_separacao: { rotulo: 'Em separação', classe: '' },
+    pronto: { rotulo: 'Pronto', classe: 'ok' },
+    concluido: { rotulo: 'Concluído', classe: 'fim' },
+    cancelado: { rotulo: 'Cancelado', classe: 'neutro' }
+};
+
+function htmlStatus(pedido) {
+    const info = STATUS_PEDIDO[pedido.status] || { rotulo: pedido.status, classe: 'neutro' };
+    const rotulo = pedido.status === 'pronto'
+        ? (pedido.tipo === 'entrega' ? 'Pronto para entrega' : 'Pronto para retirada')
+        : info.rotulo;
+    return `<span class="badge ${info.classe}">${esc(rotulo)}</span>`;
+}
+
+const textoTipo = tipo => tipo === 'entrega' ? 'Entrega em Casa' : 'Retirada no Mercadinho';
+
 atualizarContadorCarrinho();

@@ -70,4 +70,13 @@ document.querySelectorAll('.btnFiltro').forEach(btn => {
     });
 });
 
+// ex.: catalogo.html?categoria=Bebidas (link da página do produto)
+const categoriaUrl = new URLSearchParams(location.search).get('categoria');
+const botaoInicial = [...document.querySelectorAll('.btnFiltro')].find(b => b.dataset.categoria === categoriaUrl);
+if (botaoInicial) {
+    document.querySelector('.btnFiltro.ativo')?.classList.remove('ativo');
+    botaoInicial.classList.add('ativo');
+    categoriaAtiva = categoriaUrl;
+}
+
 carregarProdutos();

@@ -10,14 +10,13 @@
 
 <body>
     <header class="barraNavegacao">
-
         <h1>Mercadinho</h1>
 
         <div class="botoes">
             <a class="link" href="index.html">Home</a>
             <a class="link" href="catalogo.html">Catálogo</a>
             <a class="link" href="sobre.html">Sobre</a>
-            <a class="link ativo" href="carrinho.html">Carrinho</a>
+            <a class="link" href="carrinho.html">Carrinho</a>
             <a class="btnEntrar" href="login.html">Entrar</a>
         </div>
     </header>
@@ -25,36 +24,38 @@
     <main>
         <section class="tituloPagina">Finalizar Compra</section>
 
+        <p class="mensagem" id="checkoutMsg" role="alert" hidden></p>
+
         <section class="checkout">
-            <form>
+            <form id="formCheckout">
 
                 <div>
-
                     <h2>Dados Pessoais</h2>
-                    <label>Nome Completo</label>
-                    <input type="text" placeholder="Seu nome">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Seu nome" maxlength="100" required>
 
-                    <label>Telefone</label>
-                    <input type="text" placeholder="(44) 99999-9999">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" placeholder="(44) 99999-9999" required>
                 </div>
 
                 <div>
                     <h2>Entrega ou Retirada</h2>
                     <label>
-                        <input type="radio" name="entrega"> Retirar no Mercadinho
+                        <input type="radio" name="tipo" value="retirada" checked> Retirar no Mercadinho
                     </label>
                     <label>
-                        <input type="radio" name="entrega"> Entrega em Casa
+                        <input type="radio" name="tipo" value="entrega"> Entrega em Casa
                     </label>
 
-                    <label>Endereço</label>
-                    <input type="text" placeholder="Rua, número e bairro">
+                    <div id="campoEndereco" hidden>
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" placeholder="Rua, número e bairro" maxlength="200">
+                    </div>
                 </div>
 
                 <div>
-
                     <h2>Forma de Pagamento</h2>
-                    <select>
+                    <select id="pagamento">
                         <option>PIX</option>
                         <option>Cartão de Crédito</option>
                         <option>Cartão de Débito</option>
@@ -62,36 +63,33 @@
                     </select>
                 </div>
 
-                <button>Confirmar Pedido</button>
+                <button type="submit" id="btnConfirmar">Confirmar Pedido</button>
             </form>
 
             <section class="resumoPedido">
-
                 <h2>Resumo do Pedido</h2>
-                <ul>
-                    <li>1x Produto Exemplo - R$ 00,00</li>
-                </ul>
+                <ul id="resumoItens"></ul>
 
                 <div>
                     <p>Subtotal</p>
-                    <p>R$ 00,00</p>
+                    <p id="resumoSubtotal">R$ 0,00</p>
                 </div>
 
                 <div>
                     <p>Entrega</p>
-                    <p>R$ 00,00</p>
+                    <p id="resumoEntrega">R$ 0,00</p>
                 </div>
 
                 <div>
                     <h2>Total</h2>
-                    <h2>R$ 00,00</h2>
+                    <h2 id="resumoTotal">R$ 0,00</h2>
                 </div>
             </section>
         </section>
     </main>
 
     <footer class="rodape">
-        
+
         <div>
             <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
             <a href="ajuda.html">Central de Ajuda</a>

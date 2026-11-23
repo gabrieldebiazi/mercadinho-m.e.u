@@ -1,3 +1,10 @@
+// Barra de navegação que acompanha o login.
+// Carregue depois de api.js e utils.js, em TODAS as páginas.
+//
+// O login em si fica no cookie do servidor (dura 7 dias). O sessionStorage guarda só
+// o papel para desenhar a barra na hora, sem esperar o servidor responder.
+// Ele serve apenas para exibição: quem decide o que cada pessoa pode fazer é o servidor.
+
 const CHAVE_USUARIO = 'usuario';
 
 function lerUsuarioSessao() {
@@ -12,7 +19,7 @@ function lerUsuarioSessao() {
 function salvarUsuarioSessao(usuario) {
     try {
         if (usuario) {
-            sessionStorage.setItem(CHAVE_USUARIO, JSON.stringify({ nome: usuario.nome, papel: usuario.papel }));
+            sessionStorage.setItem(CHAVE_USUARIO, JSON.stringify({ papel: usuario.papel }));
         } else {
             sessionStorage.removeItem(CHAVE_USUARIO);
         }
@@ -58,8 +65,7 @@ function salvarUsuarioSessao(usuario) {
         }).join('');
 
         const conta = usuario
-            ? `<span class="saudacao">Olá, ${esc(String(usuario.nome ?? '').split(' ')[0])}</span>
-               <a class="btnSair" href="#">Sair</a>`
+            ? '<a class="btnSair" href="#">Sair</a>'
             : `<a class="btnEntrar${pagina === 'login.html' ? ' ativo' : ''}" href="login.html">Entrar</a>`;
 
         botoes.innerHTML = links + conta;

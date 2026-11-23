@@ -1,6 +1,10 @@
 const form = document.getElementById('formLogin');
 const msg = document.getElementById('msgLogin');
 
+// ex.: login.html?voltar=checkout.html (só aceita páginas do próprio site)
+const voltar = new URLSearchParams(location.search).get('voltar');
+const destinoVoltar = /^[a-z-]+\.html(\?id=\d+)?$/.test(voltar ?? '') ? voltar : null;
+
 form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -19,7 +23,7 @@ form.addEventListener('submit', async e => {
         salvarUsuarioSessao(usuario);
 
         const destinos = { gerente: 'gerente.html', funcionario: 'funcionario.html' };
-        location.href = destinos[usuario.papel] || 'catalogo.html';
+        location.href = destinoVoltar || destinos[usuario.papel] || 'catalogo.html';
     } catch (erro) {
         btn.disabled = false;
         mostrarMensagem(msg, erro.message, 'erro');

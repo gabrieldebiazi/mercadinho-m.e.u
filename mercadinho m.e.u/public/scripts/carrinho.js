@@ -1,41 +1,6 @@
 const listaItens = document.getElementById('listaItens');
 const msg = document.getElementById('carrinhoMsg');
 
-// Confere preço e estoque atuais no banco (o localStorage pode estar desatualizado)
-async function sincronizarCarrinho() {
-    const itens = getCarrinho();
-    if (!itens.length) return;
-
-    let data;
-    try {
-        data = await api('/produtos?ids=' + itens.map(i => i.id).join(','));
-    } catch (e) {
-        console.error(e);
-        return;
-    }
-
-    const atuais = new Map(data.map(p => [p.id, p]));
-
-    const atualizados = itens
-        .filter(i => atuais.has(i.id) && atuais.get(i.id).estoque > 0)
-        .map(i => {
-            const p = atuais.get(i.id);
-            return {
-                ...i,
-                nome: p.nome,
-                preco: Number(p.preco),
-                imagem_url: p.imagem_url,
-                estoque: p.estoque,
-                qtd: Math.min(i.qtd, p.estoque)
-            };
-        });
-
-    if (atualizados.length < itens.length) {
-        mostrarMensagem(msg, 'Alguns itens ficaram indisponíveis e foram removidos do carrinho.', 'erro');
-    }
-    salvarCarrinho(atualizados);
-}
-
 function htmlItem(i) {
     const imagem = i.imagem_url
         ? `<img src="${esc(i.imagem_url)}" alt="${esc(i.nome)}">`
@@ -106,6 +71,8 @@ document.querySelector('.btnContinuar').addEventListener('click', e => {
 
 (async () => {
     render();
-    await sincronizarCarrinho();
+    if (await sincronizarCarrinho()) {
+        mostrarMensagem(msg, 'Alguns itens ficaram indisponíveis e foram removidos do carrinho.', 'erro');
+    }
     render();
 })();

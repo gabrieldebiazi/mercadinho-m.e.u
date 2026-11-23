@@ -1,72 +1,55 @@
 const id = Number(new URLSearchParams(location.search).get('id'));
 
-const msg = document.getElementById('produtoMsg');
-const conteudo = document.getElementById('produtoConteudo');
-const inputQtd = document.getElementById('produtoQtd');
-const btnAdicionar = document.getElementById('btnAdicionar');
+const msg = document.getElementById('pedidoMsg');
+const conteudo = document.getElementById('pedidoConteudo');
 
-let produto = null;
+let temporizador = null;
 
-async function carregarProduto() {
-    if (!id) {
-        mostrarMensagem(msg, 'Produto não encontrado.', 'erro');
-        return;
-    }
+function preencher(p) {
+    document.title = `Pedido ${codigoPedido(p.id)} - Mercadinho`;
+    document.getElementById('pedidoCodigo').textContent = `Pedido ${codigoPedido(p.id)}`;
+    document.getElementById('pedidoStatus').innerHTML = htmlStatus(p);
+    document.getElementById('pedidoData').textContent =
+        `Feito em ${new Date(p.criado_em).toLocaleString('pt-BR')}`;
+    document.getElementById('pedidoTipo').textContent = `Tipo: ${textoTipo(p.tipo)}`;
+    document.getElementById('pedidoPagamento').textContent = `Pagamento: ${p.pagamento}`;
 
-    try {
-        produto = await api(`/produtos/${id}`);
-    } catch (e) {
-        mostrarMensagem(msg, e.status === 404 ? 'Produto não encontrado.' : e.message, 'erro');
-        return;
-    }
+    const endereco = document.getElementById('pedidoEndereco');
+    endereco.hidden = p.tipo !== 'entrega';
+    endereco.textContent = `Endereço: ${p.endereco ?? ''}`;
 
-    preencher();
-}
+    document.getElementById('pedidoItens').innerHTML = p.itens
+        .map(i => `<li>${i.quantidade}x ${esc(i.nome)} - ${moeda(i.preco_unitario * i.quantidade)}</li>`)
+        .join('');
 
-function preencher() {
-    document.title = `${produto.nome} - Mercadinho`;
-    document.getElementById('produtoCategoria').textContent = produto.categoria;
-    document.getElementById('produtoNome').textContent = produto.nome;
-    document.getElementById('produtoPreco').textContent = moeda(produto.preco);
-    document.getElementById('produtoDescricao').textContent = produto.descricao || '';
-
-    const img = document.getElementById('produtoImagem');
-    if (produto.imagem_url) {
-        img.src = produto.imagem_url;
-        img.alt = produto.nome;
-        img.hidden = false;
-    } else {
-        document.getElementById('produtoSemImagem').hidden = false;
-    }
-
-    const estoque = document.getElementById('produtoEstoque');
-    if (produto.estoque < 1) {
-        estoque.textContent = 'Produto sem estoque no momento.';
-        btnAdicionar.disabled = true;
-        inputQtd.disabled = true;
-    } else {
-        estoque.textContent = `${produto.estoque} unidade(s) em estoque`;
-        inputQtd.max = produto.estoque;
-    }
+    document.getElementById('pedidoSubtotal').textContent = moeda(p.subtotal);
+    document.getElementById('pedidoEntrega').textContent = moeda(p.taxa_entrega);
+    document.getElementById('pedidoTotal').textContent = moeda(p.total);
 
     conteudo.hidden = false;
 }
 
-btnAdicionar.addEventListener('click', () => {
-    if (!produto) return;
+async function carregar() {
+    if (!id) {
+        mostrarMensagem(msg, 'Pedido não encontrado.', 'erro');
+        return;
+    }
 
-    let qtd = parseInt(inputQtd.value, 10) || 1;
-    qtd = Math.max(1, Math.min(qtd, produto.estoque));
-    inputQtd.value = qtd;
+    try {
+        const pedido = await api(`/pedidos/${id}`);
+        preencher(pedido);
 
-    const resultado = adicionarAoCarrinho(produto, qtd);
-    mostrarMensagem(
-        msg,
-        resultado.limitado
-            ? `Quantidade ajustada ao estoque disponível (${resultado.qtd} no carrinho).`
-            : 'Produto adicionado ao carrinho.',
-        resultado.limitado ? 'erro' : 'sucesso'
-    );
-});
+        // pedidos finalizados não mudam mais
+        if (['concluido', 'cancelado'].includes(pedido.status)) clearInterval(temporizador);
+    } catch (e) {
+        clearInterval(temporizador);
+        if (e.status === 401) {
+            location.replace(`login.html?voltar=reserva-status.html?id=${id}`);
+            return;
+        }
+        mostrarMensagem(msg, e.status === 404 ? 'Pedido não encontrado.' : e.message, 'erro');
+    }
+}
 
-carregarProduto();
+carregar();
+temporizador = setInterval(carregar, 15000); // atualiza o status sozinho

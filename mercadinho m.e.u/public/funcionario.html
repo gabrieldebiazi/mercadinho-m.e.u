@@ -16,71 +16,29 @@
             <a class="link" href="index.html">Home</a>
             <a class="link" href="catalogo.html">Catálogo</a>
             <a class="link ativo" href="funcionario.html">Pedidos</a>
-            <a class="btnSair">Sair</a>
+            <a class="btnSair" href="#">Sair</a>
         </div>
     </header>
 
     <main>
         <section class="tituloPagina">Painel do Funcionário</section>
 
-        <section class="filtrosPedidos">
-            <button type="button" class="ativo">Todos</button>
-            <button type="button">Pendentes</button>
-            <button type="button">Em Separação</button>
-            <button type="button">Prontos para Retirada</button>
-            <button type="button">Concluídos</button>
+        <p class="mensagem" id="pedidosMsg" role="alert" hidden></p>
+
+        <section class="filtrosPedidos" id="filtrosPedidos" hidden>
+            <button type="button" class="ativo" data-status="todos">Todos</button>
+            <button type="button" data-status="pendente">Pendentes</button>
+            <button type="button" data-status="em_separacao">Em Separação</button>
+            <button type="button" data-status="pronto">Prontos</button>
+            <button type="button" data-status="concluido">Concluídos</button>
+            <button type="button" data-status="cancelado">Cancelados</button>
         </section>
 
-        <section class="listaPedidos">
-            <div>
-                <h2>Pedido #0001</h2>
-                <p>Cliente: Nome do Cliente</p>
-                <p>Tipo: Retirada no Mercadinho</p>
-                <p>Pagamento: PIX</p>
-
-                <ul>
-                    <li>2x Arroz Branco 5kg</li>
-                    <li>1x Suco de Laranja 1L</li>
-                </ul>
-
-                <p>Total: R$ 57,79</p>
-                <p>Status: Pendente</p>
-
-                <div>
-                    <button type="button">Iniciar Separação</button>
-                    <button type="button">Marcar como Pronto</button>
-                    <button type="button">Concluir Pedido</button>
-                </div>
-            </div>
-
-            <div>
-                <h2>Pedido #0002</h2>
-                <p>Cliente: Nome do Cliente</p>
-                <p>Tipo: Entrega em Casa</p>
-                <p>Endereço: Rua Exemplo, 123</p>
-                <p>Pagamento: Cartão de Crédito</p>
-
-                <ul>
-                    <li>1x Camiseta Básica</li>
-                </ul>
-
-                <p>Total: R$ 44,90</p>
-                <p>Status: Em Separação</p>
-
-                <div>
-                    <button type="button">Marcar como Pronto</button>
-                    <button type="button">Concluir Pedido</button>
-                </div>
-            </div>
-        </section>
+        <section class="listaPedidos" id="listaPedidos" hidden></section>
     </main>
 
     <footer class="rodape">
-        
-        <div>
-            <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
-            <a href="ajuda.html">Central de Ajuda</a>
-        </div>
+        <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
 
         <div class="redesSociais">
             <p>Nos siga em nossas redes sociais</p>
