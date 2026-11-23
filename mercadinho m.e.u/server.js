@@ -452,6 +452,43 @@ app.patch('/api/pedidos/:id/status', exigirPapel('funcionario', 'gerente'), asyn
     }
 });
 
+/* ---------- Painel do gerente ---------- */
+
+const LIMITE_ESTOQUE_BAIXO = 5; // mesmo valor usado em gerenciar.js
+const FUSO = 'America/Sao_Paulo'; // "hoje" é o dia no horário de Brasília
+
+app.get('/api/dashboard', exigirPapel('gerente'), async (req, res) => {
+    const [pedidos, produtos, baixos] = await Promise.all([
+        // vendas do dia = pedidos de hoje que não foram cancelados
+        pool.query(
+            `select coalesce(sum(total) filter (
+                        where status <> 'cancelado'
+                          and (criado_em at time zone $1::text)::date = (now() at time zone $1::text)::date
+                    ), 0) as vendas_hoje,
+                    (count(*) filter (where status = 'pendente'))::int as pendentes
+             from pedidos`, [FUSO]
+        ),
+        pool.query(
+            `select count(*)::int as total,
+                    (count(*) filter (where estoque < $1))::int as baixo
+             from produtos`, [LIMITE_ESTOQUE_BAIXO]
+        ),
+        pool.query(
+            'select id, nome, estoque from produtos where estoque < $1 order by estoque, nome limit 100',
+            [LIMITE_ESTOQUE_BAIXO]
+        )
+    ]);
+
+    res.json({
+        vendasHoje: pedidos.rows[0].vendas_hoje,
+        pedidosPendentes: pedidos.rows[0].pendentes,
+        produtosCadastrados: produtos.rows[0].total,
+        estoqueBaixo: produtos.rows[0].baixo,
+        limiteEstoqueBaixo: LIMITE_ESTOQUE_BAIXO,
+        produtosEstoqueBaixo: baixos.rows
+    });
+});
+
 /* ---------- Erros ---------- */
 
 app.use('/api', (req, res) => erro(res, 404, 'Rota não encontrada.'));

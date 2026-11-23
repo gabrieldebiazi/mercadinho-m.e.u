@@ -25,29 +25,31 @@
     <main>
         <section class="tituloPagina">Painel do Gerente</section>
 
-        <section class="resumoGeral">
+        <p class="mensagem" id="dashboardMsg" role="alert" hidden></p>
+
+        <section class="resumoGeral" hidden>
             <div>
                 <h3>Vendas do Dia</h3>
-                <p>R$ 00,00</p>
+                <p id="vendasDia">—</p>
             </div>
 
             <div>
                 <h3>Pedidos Pendentes</h3>
-                <p>0</p>
+                <p id="pedidosPendentes">—</p>
             </div>
 
             <div>
                 <h3>Produtos Cadastrados</h3>
-                <p>0</p>
+                <p id="produtosCadastrados">—</p>
             </div>
 
             <div>
                 <h3>Estoque Baixo</h3>
-                <p>0</p>
+                <p id="estoqueBaixo">—</p>
             </div>
         </section>
 
-        <section class="atalhosGerente">
+        <section class="atalhosGerente" hidden>
             <h2>Ações Rápidas</h2>
 
             <div>
@@ -65,13 +67,10 @@
             </div>
         </section>
 
-        <section class="alertasEstoque">
+        <section class="alertasEstoque" hidden>
             <h2>Produtos com Estoque Baixo</h2>
 
-            <ul>
-                <li>Arroz Branco 5kg - 3 unidades restantes</li>
-                <li>Suco de Laranja 1L - 2 unidades restantes</li>
-            </ul>
+            <div id="listaEstoqueBaixo"></div>
         </section>
     </main>
 
