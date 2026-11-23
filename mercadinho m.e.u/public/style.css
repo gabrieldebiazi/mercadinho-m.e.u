@@ -1137,3 +1137,339 @@ a.categoriaProduto:hover {
 .listaPedidos > p {
     grid-column: 1 / -1;
 }
+
+.cabecalhoCarrinho {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.subtituloPagina {
+    color: var(--texto-suave);
+    margin-top: 8px;
+    font-size: 0.98rem;
+}
+
+.barraFrete {
+    background-color: var(--superficie);
+    border-radius: var(--raio);
+    padding: 16px 24px;
+    box-shadow: var(--sombra);
+    border-left: 5px solid var(--verde-escuro);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.barraFreteTexto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.barraFreteTexto span {
+    font-size: 1.3rem;
+}
+
+.progressoTrilho {
+    width: 100%;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressoPreenchimento {
+    height: 100%;
+    background: linear-gradient(90deg, var(--verde), var(--verde-escuro));
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+#carrinho {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 370px;
+    align-items: start;
+    gap: 24px;
+}
+
+#listaItens {
+    padding: 8px 24px;
+}
+
+.estadoCarregando {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 48px 16px;
+    color: var(--texto-suave);
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e5e5;
+    border-top-color: var(--verde-escuro);
+    border-radius: 50%;
+    animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}
+
+#valoresCarrinho {
+    position: sticky;
+    top: 84px; /* Fica logo abaixo da navbar fixa */
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#valoresCarrinho .subtitulo {
+    text-align: left;
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec;
+}
+
+#valoresCarrinho .subtitulo h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.boxCupom label {
+    margin: 0 0 6px;
+    font-size: 0.88rem;
+    color: var(--texto-suave);
+}
+
+.grupoCupom {
+    display: flex;
+    gap: 8px;
+}
+
+.grupoCupom input {
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+}
+
+.grupoCupom button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.valores {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 0;
+}
+
+.valores > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.linhaValor {
+    font-size: 0.96rem;
+    color: var(--texto-suave);
+}
+
+.linhaValor span:last-child {
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.linhaDesconto span:last-child {
+    color: var(--verde-escuro);
+}
+
+.textoFrete {
+    font-size: 0.85rem;
+    font-weight: 500 !important;
+    color: var(--azul) !important;
+}
+
+.divisorResumo {
+    border: none;
+    border-top: 1px dashed #d4d4d4;
+    margin: 4px 0;
+}
+
+.linhaTotal {
+    align-items: flex-start !important;
+}
+
+.linhaTotal h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.linhaTotal small {
+    display: block;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+}
+
+.valorTotalDestaque {
+    color: var(--verde-escuro);
+    font-size: 1.55rem !important;
+    font-weight: 800;
+}
+
+.valores .btnContinuar {
+    width: 100%;
+    margin-top: 8px;
+    padding: 15px 24px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(47, 221, 145, 0.35);
+}
+
+.valores .btnContinuar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(19, 166, 102, 0.4);
+}
+
+.selosConfianca {
+    padding-top: 14px;
+    border-top: 1px solid #ececec;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+}
+
+.meiosPagamento {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.meiosPagamento span {
+    background-color: #f4f4f4;
+    border: 1px solid #e0e0e0;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.itemCarrinho {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto auto;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #efefef;
+    transition: background-color 0.2s;
+}
+
+.itemCarrinho:last-child {
+    border-bottom: none;
+}
+
+.itemCarrinho img,
+.itemCarrinho .semImagem {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--raio-pequeno);
+    border: 1px solid #ececec;
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.itemInfo strong,
+.itemInfo h3 {
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.itemInfo small {
+    color: var(--texto-suave);
+    font-size: 0.88rem;
+}
+
+.quantidade {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 999px;
+    padding: 3px;
+    gap: 4px;
+}
+
+.quantidade button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background-color: var(--superficie);
+    border: 1px solid #dcdcdc;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.quantidade button:hover {
+    background-color: var(--verde);
+    border-color: var(--verde);
+}
+
+.quantidade span {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.itemSubtotal {
+    min-width: 96px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-align: right;
+    color: var(--texto);
+}
+
+.btnRemover {
+    padding: 6px 10px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #888;
+    font-size: 0.85rem;
+    border-radius: 8px;
+}
+
+.btnRemover:hover {
+    background-color: #fff0f0;
+    border-color: #f5c2c2;
+    color: #c92a2a;
+}
+
+.carrinhoVazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 48px 16px;
+}

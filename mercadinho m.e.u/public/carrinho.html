@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho</title>
+    <title>Meu Carrinho | Mercadinho</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header class="barraNavegacao">
-
         <h1>Mercadinho</h1>
 
         <div class="botoes">
@@ -23,48 +22,94 @@
     </header>
 
     <main>
+        <div class="cabecalhoCarrinho">
+            <div>
+                <div class="tituloPagina">
+                    <h1>Seu Carrinho</h1>
+                </div>
+                <p class="subtituloPagina">Revise os itens selecionados antes de finalizar o pedido.</p>
+            </div>
+            <a href="catalogo.html" class="btnSecundario">← Continuar comprando</a>
+        </div>
+
+        <div class="barraFrete" id="barraFrete">
+            <div class="barraFreteTexto">
+                <span>🚚</span>
+                <p>Você está perto de ganhar <strong>Frete Grátis</strong> em compras acima de R$ 150,00!</p>
+            </div>
+            <div class="progressoTrilho">
+                <div class="progressoPreenchimento" style="width: 65%;"></div>
+            </div>
+        </div>
+
         <p class="mensagem" id="carrinhoMsg" role="status" hidden></p>
 
         <div id="carrinho">
-
-            <section id="listaItens">
-                Carregando carrinho...
+            <section id="listaItens" aria-label="Itens no carrinho">
+                <div class="estadoCarregando">
+                    <div class="spinner"></div>
+                    <p>Carregando seus produtos...</p>
+                </div>
             </section>
 
-
-            <section id="valoresCarrinho">
-
+            <aside id="valoresCarrinho" aria-label="Resumo do pedido">
                 <div class="subtitulo">
                     <h2>Resumo da compra</h2>
                 </div>
 
-                <div class="valores">
-                    <div>
-                        <p>Subtotal</p>
-                        <p id="subtotal"></p>
+                <div class="boxCupom">
+                    <label for="inputCupom">Possui cupom de desconto?</label>
+                    <div class="grupoCupom">
+                        <input type="text" id="inputCupom" placeholder="Ex: MERCADO10">
+                        <button type="button" id="btnAplicarCupom" class="btnSecundario">Aplicar</button>
                     </div>
-
-                    <div>
-                        <p>Descontos</p>
-                        <p id="descontos"></p>
-                    </div>
-
-                    <div>
-                        <h2>Total</h2>
-                        <h2 id="total"></h2>
-                    </div>
-
-                    <a class="btnContinuar" href="checkout.html">Continuar</a>
                 </div>
 
+                <div class="valores">
+                    <div class="linhaValor">
+                        <span>Subtotal</span>
+                        <span id="subtotal">R$ 0,00</span>
+                    </div>
 
-            </section>
+                    <div class="linhaValor linhaDesconto">
+                        <span>Descontos</span>
+                        <span id="descontos">- R$ 0,00</span>
+                    </div>
+
+                    <div class="linhaValor linhaFrete">
+                        <span>Entrega</span>
+                        <span class="textoFrete">Calculada no checkout</span>
+                    </div>
+
+                    <hr class="divisorResumo">
+
+                    <div class="linhaTotal">
+                        <div>
+                            <h2>Total</h2>
+                            <small>Em até 3x sem juros</small>
+                        </div>
+                        <h2 id="total" class="valorTotalDestaque">R$ 0,00</h2>
+                    </div>
+
+                    <a class="btnContinuar" href="checkout.html">
+                        Finalizar compra →
+                    </a>
+                </div>
+
+                <div class="selosConfianca">
+                    <p>🔒 Compra 100% segura e protegida</p>
+                    <div class="meiosPagamento">
+                        <span>Pix</span>
+                        <span>Crédito</span>
+                        <span>Débito</span>
+                        <span>Vale-Alimentação</span>
+                    </div>
+                </div>
+            </aside>
         </div>
-
     </main>
 
     <footer class="rodape">
-        
         <div>
             <p>Todos os direitos reservados &copy; 2026 mercadinho LTDA.</p>
             <a href="ajuda.html">Central de Ajuda</a>
