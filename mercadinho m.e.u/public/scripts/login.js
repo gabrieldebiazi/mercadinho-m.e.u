@@ -22,8 +22,7 @@ form.addEventListener('submit', async e => {
 
         salvarUsuarioSessao(usuario);
 
-        const destinos = { gerente: 'gerente.html', funcionario: 'funcionario.html' };
-        location.href = destinoVoltar || destinos[usuario.papel] || 'catalogo.html';
+        location.href = destinoVoltar || 'catalogo.html';
     } catch (erro) {
         btn.disabled = false;
         mostrarMensagem(msg, erro.message, 'erro');
