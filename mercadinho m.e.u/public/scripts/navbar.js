@@ -37,15 +37,10 @@ function salvarUsuarioSessao(usuario) {
         home: ['Home', 'index.html'],
         catalogo: ['Catálogo', 'catalogo.html'],
         sobre: ['Sobre', 'sobre.html'],
-        carrinho: ['Carrinho', 'carrinho.html'],
-        painel: ['Painel', 'gerente.html'],
-        gerenciar: ['Gerenciar', 'gerenciar.html'],
-        pedidos: ['Pedidos', 'funcionario.html']
+        carrinho: ['Carrinho', 'carrinho.html']
     };
 
     const MENU_POR_PAPEL = {
-        gerente: ['home', 'catalogo', 'painel', 'gerenciar', 'pedidos'],
-        funcionario: ['home', 'catalogo', 'pedidos'],
         cliente: ['home', 'catalogo', 'sobre', 'carrinho'],
         visitante: ['home', 'catalogo', 'sobre', 'carrinho']
     };
