@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva</title>
+    <title>Meus Pedidos</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -22,41 +22,12 @@
     </header>
 
     <main>
-        <section class="tituloPagina">Acompanhar Pedido</section>
+        <section class="tituloPagina">Meus Pedidos</section>
 
-        <p class="mensagem" id="pedidoMsg" role="status" hidden></p>
+        <p class="mensagem" id="pedidosMsg" role="status" hidden></p>
 
-        <section class="resumoPedido pedidoDetalhe" id="pedidoConteudo" hidden>
-            <div>
-                <h2 id="pedidoCodigo"></h2>
-                <span id="pedidoStatus"></span>
-            </div>
-
-            <p id="pedidoData"></p>
-            <p id="pedidoTipo"></p>
-            <p id="pedidoEndereco" hidden></p>
-            <p id="pedidoPagamento"></p>
-
-            <ul id="pedidoItens"></ul>
-
-            <div>
-                <p>Subtotal</p>
-                <p id="pedidoSubtotal"></p>
-            </div>
-
-            <div>
-                <p>Entrega</p>
-                <p id="pedidoEntrega"></p>
-            </div>
-
-            <div>
-                <h2>Total</h2>
-                <h2 id="pedidoTotal"></h2>
-            </div>
-
-            <div class="acoes">
-                <a class="btn" href="catalogo.html">Continuar comprando</a>
-            </div>
+        <section class="listaMeusPedidos" id="listaMeusPedidos" aria-live="polite">
+            <p>Carregando pedidos...</p>
         </section>
     </main>
 
@@ -80,7 +51,7 @@
     <script src="scripts/api.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/navbar.js"></script>
-    <script src="scripts/reserva-status.js"></script>
+    <script src="scripts/meus-pedidos.js"></script>
 </body>
 
 </html>

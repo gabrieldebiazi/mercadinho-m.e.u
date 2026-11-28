@@ -37,11 +37,12 @@ function salvarUsuarioSessao(usuario) {
         home: ['Home', 'index.html'],
         catalogo: ['Catálogo', 'catalogo.html'],
         sobre: ['Sobre', 'sobre.html'],
-        carrinho: ['Carrinho', 'carrinho.html']
+        carrinho: ['Carrinho', 'carrinho.html'],
+        meusPedidos: ['Meus Pedidos', 'meus-pedidos.html']
     };
 
     const MENU_POR_PAPEL = {
-        cliente: ['home', 'catalogo', 'sobre', 'carrinho'],
+        cliente: ['home', 'catalogo', 'sobre', 'carrinho', 'meusPedidos'],
         visitante: ['home', 'catalogo', 'sobre', 'carrinho']
     };
 

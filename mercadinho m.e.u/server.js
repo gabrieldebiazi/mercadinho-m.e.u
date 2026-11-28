@@ -403,6 +403,16 @@ app.get('/api/pedidos', exigirPapel('funcionario', 'gerente'), async (req, res) 
     res.json(rows);
 });
 
+// Todos os pedidos de quem está logado, do mais recente para o mais antigo
+app.get('/api/meus-pedidos', exigirLogin, async (req, res) => {
+    const { rows } = await pool.query(
+        `${SELECT_PEDIDO} where p.usuario_id = $1 group by p.id order by p.criado_em desc limit 100`,
+        [req.usuario.id]
+    );
+    rows.forEach(p => delete p.usuario_id);
+    res.json(rows);
+});
+
 // O cliente só enxerga os próprios pedidos; a equipe vê qualquer um
 app.get('/api/pedidos/:id', exigirLogin, async (req, res) => {
     const id = Number(req.params.id);

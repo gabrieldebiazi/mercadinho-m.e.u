@@ -86,7 +86,7 @@ form.addEventListener('submit', async e => {
     btnConfirmar.disabled = true;
 
     try {
-        const { id } = await api('/pedidos', {
+        await api('/pedidos', {
             method: 'POST',
             corpo: {
                 nome: document.getElementById('nome').value.trim(),
@@ -99,7 +99,7 @@ form.addEventListener('submit', async e => {
         });
 
         salvarCarrinho([]);
-        location.href = `reserva-status.html?id=${id}`;
+        location.href = 'meus-pedidos.html?pedido=ok';
     } catch (erro) {
         btnConfirmar.disabled = false;
         erroNaTela(erro.message);

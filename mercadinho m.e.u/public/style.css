@@ -1473,3 +1473,15 @@ a.categoriaProduto:hover {
     gap: 14px;
     padding: 48px 16px;
 }
+
+/* ---------- Meus pedidos ---------- */
+.listaMeusPedidos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.listaMeusPedidos > .carrinhoVazio {
+    grid-column: 1 / -1;
+}
