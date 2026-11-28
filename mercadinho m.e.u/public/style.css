@@ -213,10 +213,6 @@ main {
 #cadastro,
 .checkout form > div,
 .resumoPedido,
-.resumoGeral > div,
-.atalhosGerente > div > div,
-.alertasEstoque,
-.listaPedidos > div,
 .cardProduto {
     background-color: var(--superficie);
     border-radius: var(--raio);
@@ -228,8 +224,7 @@ main {
 button,
 .btn,
 .btnContinuar,
-.btnSecundario,
-.atalhosGerente a {
+.btnSecundario {
     display: inline-block;
     padding: 12px 24px;
     background-color: var(--verde);
@@ -246,8 +241,7 @@ button,
 
 button:hover,
 .btn:hover,
-.btnContinuar:hover,
-.atalhosGerente a:hover {
+.btnContinuar:hover {
     background-color: var(--verde-escuro);
     border-color: var(--verde-escuro);
 }
@@ -274,9 +268,8 @@ button:disabled:hover {
     color: #fff;
 }
 
-/* Filtros em formato de "chip" (catálogo e pedidos) */
-.btnFiltro,
-.filtrosPedidos button {
+/* Filtros em formato de "chip" (catálogo) */
+.btnFiltro {
     padding: 8px 16px;
     background-color: var(--superficie);
     border: 1px solid var(--borda);
@@ -284,16 +277,13 @@ button:disabled:hover {
     font-weight: 500;
 }
 
-.btnFiltro:hover,
-.filtrosPedidos button:hover {
+.btnFiltro:hover {
     background-color: var(--superficie);
     border-color: var(--verde-escuro);
 }
 
 .btnFiltro.ativo,
-.btnFiltro.ativo:hover,
-.filtrosPedidos button.ativo,
-.filtrosPedidos button.ativo:hover {
+.btnFiltro.ativo:hover {
     background-color: var(--verde);
     border-color: var(--verde);
     font-weight: 700;
@@ -716,97 +706,6 @@ textarea:focus {
     margin-top: 8px;
 }
 
-/* ---------- Painel do Gerente ---------- */
-.resumoGeral {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-}
-
-.resumoGeral h3 {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--texto-suave);
-}
-
-.resumoGeral p {
-    margin-top: 4px;
-    font-size: 1.8rem;
-    font-weight: 800;
-}
-
-.atalhosGerente {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.atalhosGerente > div {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-}
-
-.atalhosGerente > div > div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.atalhosGerente > div > div p {
-    color: var(--texto-suave);
-    margin-bottom: 8px;
-}
-
-.alertasEstoque ul {
-    list-style: none;
-}
-
-.alertasEstoque li {
-    margin-bottom: 8px;
-    padding: 10px 14px;
-    background-color: rgba(224, 161, 0, 0.12);
-    border-left: 4px solid var(--alerta);
-    border-radius: 8px;
-}
-
-/* ---------- Painel do Funcionário ---------- */
-.filtrosPedidos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.listaPedidos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 16px;
-    align-items: start;
-}
-
-.listaPedidos p {
-    margin-bottom: 4px;
-}
-
-.listaPedidos ul {
-    margin: 10px 0;
-    padding-left: 20px;
-}
-
-.listaPedidos > div > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-}
-
-.listaPedidos button {
-    padding: 8px 14px;
-    font-size: 0.9rem;
-}
-
 /* ---------- Mensagens, ações e imagem vazia (reutilizáveis) ---------- */
 .mensagem {
     margin-top: 16px;
@@ -973,53 +872,6 @@ textarea:focus {
     padding: 24px 0;
 }
 
-/* ---------- Gerenciar produtos ---------- */
-.formProduto {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 16px;
-}
-
-.formProduto .campoLargo {
-    grid-column: 1 / -1;
-}
-
-.tabelaWrap {
-    overflow-x: auto;
-}
-
-.tabelaProdutos {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.tabelaProdutos th,
-.tabelaProdutos td {
-    padding: 10px 12px;
-    text-align: left;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.tabelaProdutos th {
-    font-size: 0.85rem;
-    color: var(--texto-suave);
-}
-
-.tabelaProdutos .acoesLinha {
-    display: flex;
-    gap: 8px;
-}
-
-.tabelaProdutos button {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-}
-
-.estoqueBaixo {
-    color: #a87500;
-    font-weight: 700;
-}
-
 /* ==========================================================
    6. RESPONSIVO
    ========================================================== */
@@ -1039,8 +891,7 @@ textarea:focus {
         flex-direction: column;
     }
 
-    .produtoDetalhe,
-    .formProduto {
+    .produtoDetalhe {
         grid-template-columns: 1fr;
     }
 
@@ -1069,22 +920,6 @@ textarea:focus {
         transition: none !important;
     }
 }
-/* ---------- Prévia da imagem no cadastro de produto ---------- */
-.previaImagem {
-    width: 120px;
-    height: 120px;
-    margin-top: 12px;
-    object-fit: cover;
-    border-radius: var(--raio-pequeno);
-    border: 1px solid var(--borda);
-}
-
-/* ---------- Saudação na barra de navegação ---------- */
-.saudacao {
-    padding: 0 6px;
-    font-weight: 600;
-}
-
 /* ---------- Selos de status (pedidos e estoque) ---------- */
 .badge {
     display: inline-block;
@@ -1116,7 +951,7 @@ textarea:focus {
     color: var(--texto-suave);
 }
 
-/* ---------- Produto, pedido e painel de pedidos ---------- */
+/* ---------- Produto e pedido ---------- */
 a.categoriaProduto {
     text-decoration: none;
 }
@@ -1132,10 +967,6 @@ a.categoriaProduto:hover {
 
 .pedidoDetalhe {
     max-width: 640px;
-}
-
-.listaPedidos > p {
-    grid-column: 1 / -1;
 }
 
 .cabecalhoCarrinho {
